@@ -9,7 +9,7 @@ create database Hospital;
 
 create table Paciente
 (
-	num_paciente integer NOT NULL,
+	num_paciente serial,
 	nombre_p varchar NOT NULL,
 	appat_p varchar NOT NULL,
 	apmat_p varchar NOT NULL,
@@ -29,10 +29,10 @@ CREATE TABLE Expediente
 
 create table Cita
 (
-	id_cita varchar not null,
+	id_cita serial,
 	num_paciente integer not null,
-	consultorio integer not null,
-	fecha_hora date not null,
+	consultorio varchar not null,
+	fecha_hora timestamp not null constraint fecha_invalida check (fecha_hora < now()),
 	constraint Cita_pkey primary key(id_cita),
 	constraint Cita_fkey foreign key(num_paciente) references Paciente(num_paciente)
 );
@@ -40,18 +40,17 @@ create table Cita
 create table Medico
 (
 	cedula varchar not null, 
-	edad integer not null, 
+	edad integer not null constraint edad_invalida check (edad <= 18), 
 	nombre_m varchar not null, 
 	appat_m varchar not null,
 	apmat_m varchar not null,
-	constraint Medico_pkey primary key(cedula),
-	constraint Edad_invalida CHECK (edad >=18)
+	constraint Medico_pkey primary key(cedula),	
 );
 
 
 create table Especialidad
 (
-	cns integer not null,
+	cns serial,
 	cedula varchar not null,
 	especialidad varchar not null,
 	constraint Especialidad_pkey primary key(cns, cedula),
@@ -61,21 +60,21 @@ create table Especialidad
 
 create table Consulta
 (
-	id_consulta varchar not null,
-	id_cita varchar not null,
+	id_consulta serial,
+	id_cita integer not null,
 	cedula varchar not null,
-	fecha_hora_c date not null,
-	consultorio_c integer not null,
+	fecha_hora_c timestamp not null,
+	consultorio_c varchar not null,
 	constraint Consulta_pkey primary key(id_consulta),
 	constraint Consulta_fkey_idCita foreign key(id_cita)
-	references Cita(id_cita) match simple on update no action on delete  cascade,
+	references Cita(id_cita) match simple on update no action on delete cascade,
 	constraint Consulta_fkey_cedula foreign key(cedula)
-	references Medico(cedula) match simple on update no action on delete  cascade
+	references Medico(cedula) match simple on update no action on delete cascade
 );
 
 create table Diagnostico
 (
-	num_diagnostico integer not null,
+	num_diagnostico serial,
 	num_exp integer not null, 
 	cedula varchar not null,
 	medicinas varchar not null,
