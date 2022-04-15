@@ -9,7 +9,7 @@ create database Hospital;
 
 create table Paciente
 (
-	num_paciente serial,
+	num_paciente integer not NULL GENERATED ALWAYS AS IDENTITY,
 	nombre_p varchar NOT NULL,
 	appat_p varchar NOT NULL,
 	apmat_p varchar NOT NULL,
@@ -20,7 +20,7 @@ create table Paciente
 
 CREATE TABLE Expediente
 (
-	num_exp serial, 
+	num_exp integer not NULL GENERATED ALWAYS AS IDENTITY, 
 	num_paciente integer not null,
 	alergias varchar,
 	constraint Expediente_pkey primary key(num_exp),
@@ -29,7 +29,7 @@ CREATE TABLE Expediente
 
 create table Cita
 (
-	id_cita serial,
+	id_cita integer not NULL GENERATED ALWAYS AS IDENTITY,
 	num_paciente integer not null,
 	consultorio varchar not null,
 	fecha_hora timestamp not null constraint fecha_invalida check (fecha_hora < now()),
@@ -50,7 +50,7 @@ create table Medico
 
 create table Especialidad
 (
-	cns serial,
+	cns integer not NULL GENERATED ALWAYS AS IDENTITY,
 	cedula varchar not null,
 	especialidad varchar not null,
 	constraint Especialidad_pkey primary key(cns, cedula),
@@ -60,7 +60,7 @@ create table Especialidad
 
 create table Consulta
 (
-	id_consulta serial,
+	id_consulta integer not NULL GENERATED ALWAYS AS IDENTITY,
 	id_cita integer not null,
 	cedula varchar not null,
 	fecha_hora_c timestamp not null,
@@ -74,7 +74,7 @@ create table Consulta
 
 create table Diagnostico
 (
-	num_diagnostico serial,
+	num_diagnostico integer not NULL GENERATED ALWAYS AS IDENTITY,
 	num_exp integer not null, 
 	cedula varchar not null,
 	medicinas varchar not null,
