@@ -2,11 +2,10 @@
 --creacion de la base
 create database Hospital;
 
---cambiarse de bd de la por defecto(postgres)
+--Conectarse a la base de datos
 \c hospital
 
 --creacion de la tablas
-
 create table Paciente
 (
 	num_paciente integer not NULL GENERATED ALWAYS AS IDENTITY,
@@ -86,8 +85,7 @@ create table Diagnostico
 	references Medico(cedula) match simple on update no action on delete cascade
 );
 
-
---esta atabla no se si deba de ir, seria la relacion que tiene el paciete con el medico, ayudaria a identificar que paciente se atiende con que medico y que medico atiende a los diferentes pacientes
+--Crear tabla de la relacion entre paciente y medico
 create table Detalle_Paciente_Medico
 (
 	cedula varchar not null,
@@ -98,3 +96,18 @@ create table Detalle_Paciente_Medico
 	constraint Detalle_Paciente_fkey foreign key(num_paciente)
 	references Paciente(num_paciente) match simple on update no action on delete cascade
 );
+
+--Crear grupos de usuarios
+create group recepcion;
+create group medicos;
+
+--Creacion de usuarios para cada grupo
+--Grupo de recepcion
+create user losada with password 'contraseña' in group recepcion;
+create user ___ with password 'contraseña' in group recepcion;
+--Grupo de medicos
+create user __ with password 'contraseña' in group medicos;
+create user __ with password 'contraseña' in group medicos;
+
+--Otorgando privilegios de las tablas para el grupo de recepcion
+.
