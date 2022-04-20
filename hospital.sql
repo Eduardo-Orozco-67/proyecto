@@ -110,4 +110,27 @@ create user __ with password 'contraseña' in group medicos;
 create user __ with password 'contraseña' in group medicos;
 
 --Otorgando privilegios de las tablas para el grupo de recepcion
-.
+--Tablas en las que se otorgan todos los permisos
+GRANT all ON table Paciente to group recepcion;
+GRANT all ON table Cita to group recepcion;
+GRANT all ON table Consulta to group recepcion;
+GRANT all ON table Detalle_Paciente_Medico to group recepcion;
+--Tablas a las que se le da permiso para seleccionar y eliminar
+GRANT select, delete ON table Expediente to group recepcion;
+--Tablas con permisos solo para seleccionar
+GRANT select ON table Medico to group recepcion;
+GRANT select ON table Especialidad to group recepcion;
+GRANT select ON table Diagnostico to group recepcion;
+
+--Otorgando privilegios de las tablas para el grupo de medicos
+--Tablas en las que se otorgan todos los permisos
+GRANT all ON table Medico to group medicos;
+GRANT all ON table Especialidad to group medicos;
+GRANT all ON table Diagnostico to group medicos;
+--Tablas a las que se le da permiso para seleccionar, eliminar y actualizar
+GRANT select, delete, update ON table Expediente to group medicos;
+--Tablas con permisos solo para seleccionar
+GRANT select ON table Paciente to group medicos;
+GRANT select ON table Cita to group medicos;
+GRANT select ON table Consulta to group medicos;
+GRANT select ON table Detalle_Paciente_Medico to group medicos;
