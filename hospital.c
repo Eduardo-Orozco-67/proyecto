@@ -4,7 +4,7 @@
 // ./hospital
 
 //Metodos para el menu se la secretaria --------------------------------------------------------------------------------------------
-void Alta_Paciente()
+void Alta_Paciente() 
 {
 
 }
@@ -21,6 +21,6 @@ void Eliminar_Paciente()
 
 void Seleccionar_Paciente()
 {
-    
+
 
 }
