@@ -75,7 +75,7 @@ create table Diagnostico(
 	valoracion_medica varchar not null,
 	constraint Diagnostico_pkey primary key(num_diagnostico),
 	constraint Diagnostico_fkey_numExp foreign key (num_exp)
-	references Expediente(num_exp) match simple on update no action on delete cascade,
+	references Expediente(num_exp) match simple on update no action on delete cascade, 
 	constraint Diagnostico_fkey_cedula foreign key (cedula)
 	references Medico(cedula) match simple on update no action on delete cascade
 );
