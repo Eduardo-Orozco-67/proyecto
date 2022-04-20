@@ -107,7 +107,7 @@ create group administrador;
 create user noe_orozco with password 'recepcion' in group recepcion;
 create user jeannette_guillen with password 'recepcion' in group recepcion;
 --Grupo de medicos
-create user samuel_losadda with password 'medico' in group medicos;
+create user samuel_losada with password 'medico' in group medicos;
 create user eduardo_guzman with password 'medico' in group medicos;
 --Grupo de administrador
 create user emilia_hernandez with password 'admin' in group administrador;
