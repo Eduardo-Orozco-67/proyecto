@@ -43,7 +43,7 @@ create table Medico
 	nombre_m varchar not null, 
 	appat_m varchar not null,
 	apmat_m varchar not null,
-	constraint Medico_pkey primary key(cedula),	
+	constraint Medico_pkey primary key(cedula)
 );
 
 
@@ -100,21 +100,23 @@ create table Detalle_Paciente_Medico
 --Crear grupos de usuarios
 create group recepcion;
 create group medicos;
+create group administrador;
 
 --Creacion de usuarios para cada grupo
 --Grupo de recepcion
-create user losada with password 'contraseña' in group recepcion;
-create user ___ with password 'contraseña' in group recepcion;
+create user noe_orozco with password 'recepcion' in group recepcion;
+create user jeannette_guillen with password 'recepcion' in group recepcion;
 --Grupo de medicos
-create user __ with password 'contraseña' in group medicos;
-create user __ with password 'contraseña' in group medicos;
+create user samuel_losadda with password 'medico' in group medicos;
+create user eduardo_guzman with password 'medico' in group medicos;
+--Grupo de administrador
+create user emilia_hernandez with password 'admin' in group administrador;
 
 --Otorgando privilegios de las tablas para el grupo de recepcion
 --Tablas en las que se otorgan todos los permisos
 GRANT all ON table Paciente to group recepcion;
 GRANT all ON table Cita to group recepcion;
 GRANT all ON table Consulta to group recepcion;
-GRANT all ON table Detalle_Paciente_Medico to group recepcion;
 --Tablas a las que se le da permiso para seleccionar y eliminar
 GRANT select, delete ON table Expediente to group recepcion;
 --Tablas con permisos solo para seleccionar
@@ -133,4 +135,13 @@ GRANT select, delete, update ON table Expediente to group medicos;
 GRANT select ON table Paciente to group medicos;
 GRANT select ON table Cita to group medicos;
 GRANT select ON table Consulta to group medicos;
-GRANT select ON table Detalle_Paciente_Medico to group medicos;
+
+--Otorgando permisos de las tablas para el grupo del administrador
+GRANT all ON table Paciente to group administrador;
+GRANT all ON table Expediente to group administrador;
+GRANT all ON table Cita to group administrador;
+GRANT all ON table Medico to group administrador;
+GRANT all ON table Especialidad to group administrador;
+GRANT all ON table Consulta to group administrador;
+GRANT all ON table Diagnostico to group administrador;
+GRANT all ON table Detalle_Paciente_Medico to group administrador;
