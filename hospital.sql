@@ -144,4 +144,4 @@ GRANT all ON table Medico to group administrador;
 GRANT all ON table Especialidad to group administrador;
 GRANT all ON table Consulta to group administrador;
 GRANT all ON table Diagnostico to group administrador;
-GRANT all ON table Detalle_Paciente_Medico to group administrador;
+GRANT all ON table Detalle_Paciente_Medico to group administrador; 
