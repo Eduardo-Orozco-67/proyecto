@@ -7,7 +7,7 @@
 // gcc -o crud hospital.c -I /usr/include/postgresql/ -lpq
 // ./hospital
 
-//Metodos para el menu se la secretaria --------------------------------------------------------------------------------------------
+//Metodos para el menu de la secretaria --------------------------------------------------------------------------------------------
 void Alta_Paciente()    
 {
 printf("xd");
