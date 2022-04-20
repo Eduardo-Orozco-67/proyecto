@@ -134,7 +134,7 @@ GRANT select, delete, update ON table Expediente to group medicos;
 --Tablas con permisos solo para seleccionar
 GRANT select ON table Paciente to group medicos;
 GRANT select ON table Cita to group medicos;
-GRANT select ON table Consulta to group medicos;
+GRANT select ON table Consulta to group medicos; 
 
 --Otorgando permisos de las tablas para el grupo del administrador
 GRANT all ON table Paciente to group administrador;
@@ -144,4 +144,4 @@ GRANT all ON table Medico to group administrador;
 GRANT all ON table Especialidad to group administrador;
 GRANT all ON table Consulta to group administrador;
 GRANT all ON table Diagnostico to group administrador;
-GRANT all ON table Detalle_Paciente_Medico to group administrador;
+GRANT all ON table Detalle_Paciente_Medico to group administrador; 
