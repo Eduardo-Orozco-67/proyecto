@@ -1,11 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-int main(int arcg, char *argv[])
+void Alta_Paciente()
 {
-    printf("Hola mundoo");
+
 }
 
-//holaa
-//eee
+void Actualizar_Paciente()
+{
+
+}
+
+void Eliminar_Paciente()
+{
+
+}
+
+void Seleccionar_Paciente()
+{
+
+
+}
