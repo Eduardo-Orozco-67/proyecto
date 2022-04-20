@@ -2,11 +2,10 @@
 --creacion de la base
 create database Hospital;
 
---cambiarse de bd de la por defecto(postgres)
+--Conectarse a la base de datos
 \c hospital
 
 --creacion de la tablas
-
 create table Paciente
 (
 	num_paciente integer not NULL GENERATED ALWAYS AS IDENTITY,
@@ -44,7 +43,7 @@ create table Medico
 	nombre_m varchar not null, 
 	appat_m varchar not null,
 	apmat_m varchar not null,
-	constraint Medico_pkey primary key(cedula),	
+	constraint Medico_pkey primary key(cedula)
 );
 
 
@@ -86,8 +85,7 @@ create table Diagnostico
 	references Medico(cedula) match simple on update no action on delete cascade
 );
 
-
---esta atabla no se si deba de ir, seria la relacion que tiene el paciete con el medico, ayudaria a identificar que paciente se atiende con que medico y que medico atiende a los diferentes pacientes
+--Crear tabla de la relacion entre paciente y medico
 create table Detalle_Paciente_Medico
 (
 	cedula varchar not null,
@@ -98,3 +96,52 @@ create table Detalle_Paciente_Medico
 	constraint Detalle_Paciente_fkey foreign key(num_paciente)
 	references Paciente(num_paciente) match simple on update no action on delete cascade
 );
+
+--Crear grupos de usuarios
+create group recepcion;
+create group medicos;
+create group administrador;
+
+--Creacion de usuarios para cada grupo
+--Grupo de recepcion
+create user noe_orozco with password 'recepcion' in group recepcion;
+create user jeannette_guillen with password 'recepcion' in group recepcion;
+--Grupo de medicos
+create user samuel_losadda with password 'medico' in group medicos;
+create user eduardo_guzman with password 'medico' in group medicos;
+--Grupo de administrador
+create user emilia_hernandez with password 'admin' in group administrador;
+
+--Otorgando privilegios de las tablas para el grupo de recepcion
+--Tablas en las que se otorgan todos los permisos
+GRANT all ON table Paciente to group recepcion;
+GRANT all ON table Cita to group recepcion;
+GRANT all ON table Consulta to group recepcion;
+--Tablas a las que se le da permiso para seleccionar y eliminar
+GRANT select, delete ON table Expediente to group recepcion;
+--Tablas con permisos solo para seleccionar
+GRANT select ON table Medico to group recepcion;
+GRANT select ON table Especialidad to group recepcion;
+GRANT select ON table Diagnostico to group recepcion;
+
+--Otorgando privilegios de las tablas para el grupo de medicos
+--Tablas en las que se otorgan todos los permisos
+GRANT all ON table Medico to group medicos;
+GRANT all ON table Especialidad to group medicos;
+GRANT all ON table Diagnostico to group medicos;
+--Tablas a las que se le da permiso para seleccionar, eliminar y actualizar
+GRANT select, delete, update ON table Expediente to group medicos;
+--Tablas con permisos solo para seleccionar
+GRANT select ON table Paciente to group medicos;
+GRANT select ON table Cita to group medicos;
+GRANT select ON table Consulta to group medicos;
+
+--Otorgando permisos de las tablas para el grupo del administrador
+GRANT all ON table Paciente to group administrador;
+GRANT all ON table Expediente to group administrador;
+GRANT all ON table Cita to group administrador;
+GRANT all ON table Medico to group administrador;
+GRANT all ON table Especialidad to group administrador;
+GRANT all ON table Consulta to group administrador;
+GRANT all ON table Diagnostico to group administrador;
+GRANT all ON table Detalle_Paciente_Medico to group administrador;
