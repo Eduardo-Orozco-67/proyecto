@@ -5,7 +5,7 @@
 #include <time.h>
 #include <libpq-fe.h>
 // gcc -o crud hospital.c -I /usr/include/postgresql/ -lpq
-// ./hospital
+// ./crud
 
 /*conectaar con postgres 
 --sudo -i -u postgres
@@ -231,7 +231,7 @@ void MenuSecretaria()
                                         printf("\n Digite una opcion correcta...\n");
                                 }//Fin del switch expediente
 
-                            }while(opcExp); //Fin while de expediente
+                            }while(opcExp!=3); //Fin while de expediente
                             
                         break;
 
@@ -311,7 +311,7 @@ void MenuSecretaria()
                 do
                 {
                     printf("\n Bienvenido a Reportes \n");
-                    printf("\n B) Paciente y medico con mas edad \n C) Promedio de edades de pacientes y medicos \n E) Numero de consultas al dia por medico \n 4.- Salir \n");
+                    printf("\n 1.- B) Paciente y medico con mas edad \n 2.- C) Promedio de edades de pacientes y medicos \n 3.- E) Numero de consultas al dia por medico \n 4.- Salir \n");
                     printf("Elija una opcion: ");
                     scanf("%i", &opcR);
 
@@ -357,7 +357,8 @@ void MenuSecretaria()
 
 void MenuMedico()
 {
-    int opcM;
+    int opcM, opcCM, opcPM, opcRM;
+    int opcDiag, opcMedic, opcCrudMedico, opcCrudEspec, opcExp, opcConsulta;
 
     do
     {
@@ -369,15 +370,284 @@ void MenuMedico()
         switch(opcM)
         {
             case 1: //opcion catalogos medico
+                do
+                {
+                    printf("\n Bienvenido a Catalogos de medico \n");
+                    printf("\n 1.- Medico \n 2.- Diagnostico \n 3.- Salir \n");
+                    printf("Elija una opcion: ");
+                    scanf("%i", &opcCM);
 
+                    switch(opcCM)
+                    {
+                        case 1: //Medico y especialidad
+
+                            do 
+                            { 
+                                printf("\n-----Medicos-----\n");
+                                printf("\n 1.- Medico \n 2.- Especialidad \n 3.- Salir \n");
+                                printf("Elija una opcion: ");
+                                scanf("%i", &opcMedic);
+
+                                switch(opcMedic)
+                                {
+                                    case 1:
+                                        //Crud tabla medico
+                                        do
+                                        {
+                                            printf("\n-----Medico-----\n");
+                                            printf("\n 1.- Alta medico \n 2.- Baja medico \n 3.- Modificar medico \n 4.- Consultar medicos \n 5.- Salir \n");
+                                            printf("Elija una opcion: ");
+                                            scanf("%i", &opcCrudMedico);
+
+                                            switch(opcCrudMedico)
+                                            {
+                                                case 1:
+                                                    //Metodo alta medico
+                                                break;
+
+                                                case 2:
+                                                    //Metodo baja medico
+                                                break;
+
+                                                case 3:
+                                                    //Metodo modificar medico
+                                                break;
+
+                                                case 4:
+                                                    //Metodo consulta medico
+                                                break;
+
+                                                case 5:
+                                                    printf("\n --Saliendo de medico...\n");
+                                                break;
+
+                                                default:
+                                                    printf("\n Digite una opcion corretca...\n");
+                                            }
+
+                                        }while(opcCrudMedico!=5);
+
+                                    break;
+
+                                    case 2:
+                                        //Crud tabla especialidad
+                                        do
+                                        {
+                                            printf("\n-----Especialidad de medicos-----\n");
+                                            printf("\n 1.- Alta especialidad \n 2.- Baja especialidad \n 3.- Modificar especialidad \n 4.- Consultar especialidades \n 5.- Salir \n");
+                                            printf("Elija una opcion: ");
+                                            scanf("%i", &opcCrudEspec);
+
+                                            switch(opcCrudEspec)
+                                            {
+                                                case 1:
+                                                    //Metodo alta especialidad
+                                                break;
+
+                                                case 2:
+                                                    //Metodo baja especialidad
+                                                break;
+
+                                                case 3:
+                                                    //Metodo modificar especialidad
+                                                break;
+
+                                                case 4:
+                                                    //Metodo consulta especialidad
+                                                break;
+
+                                                case 5:
+                                                    printf("\n --Saliendo de especialidades...\n");
+                                                break;
+
+                                                default:
+                                                    printf("\n Digite una opcion correcta...\n");
+                                            }
+
+                                        }while(opcCrudEspec!=5);
+
+                                    break;
+
+                                    case 3:
+                                        printf("\n Saliendo de medicos...\n");
+                                    break;
+
+                                    default:
+                                        printf("\n Digite una opcion corretca...\n");
+                                }
+
+                            }while(opcMedic!=3); //Fin del while medicos 
+
+                        break;
+
+                        case 2: //Diagnostico
+                            do
+                            {
+                                //Crud tabla diagnostico
+                                printf("\n-----Diagnosticos-----\n");
+                                printf("\n 1.- Alta diagnostico \n 2.- Baja diagnostico \n 3.- Modificar diagnostico \n 4.- Consultar diagnosticos \n 5.- Salir \n");
+                                printf("Elija una opcion: ");
+                                scanf("%i", &opcDiag);
+
+                                switch(opcDiag)
+                                {
+                                    case 1:
+                                        //Metodo alta diagnostico
+                                    break;
+                                    
+                                    case 2:
+                                        //Metodo baja diagnostico
+                                    break;
+
+                                    case 3:
+                                        //Metodo modificar diagnostico
+                                    break;
+
+                                    case 4:
+                                        //Metodo consultar diagnostico
+                                    break;
+
+                                    case 5:
+                                        printf("\n --Saliendo de diagnostico...\n");
+                                    break;
+
+                                    default:
+                                        printf("\n Digite una opcion correcta...\n");
+                                }
+
+                            }while(opcDiag!=5);
+
+                        break;
+
+                        case 3: //Salir
+                            printf("\n Saliendo de catalogos de medicos...\n");
+                        break;
+
+                        default:
+                            printf("\n Seleccione una opcion valida...\n");
+                    }
+
+                }while(opcCM!=3); //Fin del while catalogos del medico
+                
             break;
 
             case 2: //opcion procesos medico
 
+                do
+                {
+                    printf("\n Bienvenido a procesos de medico \n");
+                    printf("\n 1.- Paciente \n 2.- Cita \n 3.- Salir \n");
+                    printf("Elija una opcion: ");
+                    scanf("%i", &opcPM);
+
+                    switch(opcPM)
+                    {
+                        case 1: //paciente
+
+                            do
+                            {
+                                printf("\n -----Pacientes----- \n");
+                                printf("\n 1.- Ver paciente \n 2.- Ver expediente \n 3.- Salir \n");
+                                printf("Elija una opcion: ");
+                                scanf("%i", &opcExp);
+
+                                switch(opcExp)
+                                {
+                                    case 1:
+                                        //Metodo ver paciente
+                                    break;
+
+                                    case 2:
+                                        //Metodo ver expediente
+                                    break;
+
+                                    case 3:
+                                        printf("\n --Saliendo de Pacientes...\n ");
+                                    break;
+
+                                    default:
+                                        printf("\n Seleccione una opcion valida...\n");
+                                }
+
+                            }while(opcExp!=3); //Fin del while paciente proceso
+                            
+                        break;
+
+                        case 2: //cita
+
+                            do
+                            {
+                                printf("\n -----Citas----- \n");
+                                printf("\n 1.- Ver citas \n 2.- Ver consultas \n 3.- Salir \n");
+                                printf("Elija una opcion: ");
+                                scanf("%i", &opcConsulta);
+
+                                switch(opcConsulta)
+                                {
+                                    case 1:
+                                        //Metodo ver citas
+                                    break;
+
+                                    case 2:
+                                        //Metodo ver consultas
+                                    break;
+
+                                    case 3:
+                                        printf("\n --Saliendo de Citas...\n ");
+                                    break;
+
+                                    default:
+                                        printf("\n Seleccione una opcion valida...\n");
+                                }
+
+                            }while(opcConsulta!=3);
+
+                        break;
+
+                        case 3: //salir
+                            printf("\n Saliendo de procesos de medicos...\n");
+                        break;
+
+                        default:
+                            printf("\n Seleccione una opcion valida...\n");
+                    }
+
+                } while(opcPM!=3); //Fin del while procesos del medico
+                
             break;
 
             case 3://opcion reportes medico
+                do
+                {
+                    printf("\n Bienvenido a reportes del medico \n");
+                    printf("\n 1.- A) Lista de pacientes por medico \n 2.- D) Consultas de los pacientes por fecha \n 3.- E) Numero de consultas por dia por el medico \n 4.- Salir \n");
+                    printf("Elija una opcion: ");
+                    scanf("%i", &opcRM);
 
+                    switch(opcRM)
+                    {
+                        case 1:
+                            //Metodo A)
+                        break;
+
+                        case 2:
+                            //Metodo D)
+                        break;
+
+                        case 3:
+                            //Metodo E)
+                        break;
+
+                        case 4:
+                            printf("\nSaliendo del menu reportes medico...\n");
+                        break;
+
+                        default:
+                            printf("\n Seleccione una opcion valida...\n");
+                    }
+
+                }while(opcRM!=4); //Fin del while de reportes del medico
+                
             break;
 
             case 4:
