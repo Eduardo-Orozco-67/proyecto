@@ -43,7 +43,7 @@ void MenuSecretaria()
 {
     //variables
     int opcS, opcC, opcP, opcR;
-    int opcPac, opcCita, opcCons, opcExp;
+    int opcPac, opcCita, opcCons, opcExp, opcMed, opcDiag;
 
     do
     {
@@ -216,12 +216,15 @@ void MenuSecretaria()
                                 switch(opcExp)
                                 {
                                     case 1:
+                                        //Metodo
                                     break;
 
                                     case 2:
+                                        //Metodo
                                     break;
 
                                     case 3:
+                                        printf("\n Saliendo de expedientes...\n");
                                     break;
 
                                     default:
@@ -233,16 +236,69 @@ void MenuSecretaria()
                         break;
 
                         case 2:
+
+                            do
+                            {
+                                printf("\n-----Medicos-----\n");
+                                printf("\n 1.- Ver medicos \n 2.- Especialidad de medicos \n 3.- Salir \n");
+                                printf("Elija una opcion: ");
+                                scanf("%i", &opcMed);
+
+                                switch(opcMed)
+                                {
+                                    case 1:
+                                        //Metodo
+                                    break;
+
+                                    case 2:
+                                        //Metodo
+                                    break;
+
+                                    case 3:
+                                        printf("\n Saliendo de medicos...\n");
+                                    break;
+
+                                    default:
+                                        printf("\n Digite una opcion correcta...\n");
+                                }//Fin del switch de medicos
+                                
+                            }while(opcMed!=3);//Fin while medicos en menu secretaria
+                            
                         break;
 
                         case 3:
+
+                            do
+                            {
+                                printf("\n-----Diagnosticos-----\n");
+                                printf("\n 1.- Ver diagnosticos \n 2.- Salir \n");
+                                printf("Elija una opcion: ");
+                                scanf("%i", &opcDiag);
+
+                                switch(opcDiag)
+                                {
+                                    case 1:
+                                        //Metodo
+                                    break;
+
+                                    case 2:
+                                        printf("\n Saliendo de diagnosticos...\n");
+                                    break;
+
+                                    default:
+                                        printf("\n Digite una opcion correcta...\n");
+                                }//Fin switch diagnostico
+
+                            }while(opcDiag!=2);//Fin del while diagnosticos secretaria
+                            
                         break;
                         
                         case 4:
+                            printf("\n Saliendo de procesos...\n");
                         break;
 
                         default:
-                            printf("\n Digite una opcion corretca...\n");
+                            printf("\n Digite una opcion correcta...\n");
 
                     }//Fin del switch opcP
 
@@ -262,15 +318,19 @@ void MenuSecretaria()
                     switch(opcR)
                     {
                         case 1:
+                            //Metodo
                         break;
 
                         case 2:
+                            //Metodo
                         break;
 
                         case 3:
+                            //Metodo
                         break;
 
                         case 4:
+                            printf("\n Saliendo de reportes...\n");
                         break;
 
                         default:
