@@ -311,7 +311,7 @@ void MenuSecretaria()
                 do
                 {
                     printf("\n Bienvenido a Reportes \n");
-                    printf("\n B) Paciente y medico con mas edad \n C) Promedio de edades de pacientes y medicos \n E) Numero de consultas al dia por medico \n 4.- Salir \n");
+                    printf("\n 1.- B) Paciente y medico con mas edad \n 2.- C) Promedio de edades de pacientes y medicos \n 3.- E) Numero de consultas al dia por medico \n 4.- Salir \n");
                     printf("Elija una opcion: ");
                     scanf("%i", &opcR);
 
@@ -396,7 +396,7 @@ void MenuMedico()
                                         {
                                             printf("\n-----Medico-----\n");
                                             printf("\n 1.- Alta medico \n 2.- Baja medico \n 3.- Modificar medico \n 4.- Consultar medicos \n 5.- Salir \n");
-                                            printf2("Elija una opcion: ");
+                                            printf("Elija una opcion: ");
                                             scanf("%i", &opcCrudMedico);
 
                                             switch(opcCrudMedico)
@@ -435,7 +435,7 @@ void MenuMedico()
                                         {
                                             printf("\n-----Especialidad de medicos-----\n");
                                             printf("\n 1.- Alta especialidad \n 2.- Baja especialidad \n 3.- Modificar especialidad \n 4.- Consultar especialidades \n 5.- Salir \n");
-                                            printf2("Elija una opcion: ");
+                                            printf("Elija una opcion: ");
                                             scanf("%i", &opcCrudEspec);
 
                                             switch(opcCrudEspec)
@@ -486,7 +486,7 @@ void MenuMedico()
                                 //Crud tabla diagnostico
                                 printf("\n-----Diagnosticos-----\n");
                                 printf("\n 1.- Alta diagnostico \n 2.- Baja diagnostico \n 3.- Modificar diagnostico \n 4.- Consultar diagnosticos \n 5.- Salir \n");
-                                printf2("Elija una opcion: ");
+                                printf("Elija una opcion: ");
                                 scanf("%i", &opcDiag);
 
                                 switch(opcDiag)
@@ -620,7 +620,7 @@ void MenuMedico()
                 do
                 {
                     printf("\n Bienvenido a reportes del medico \n");
-                    printf("\n A) Lista de pacientes por medico \n D) Consultas de los pacientes por fecha \n E) Numero de consultas por dia por el medico \n 4.- Salir \n");
+                    printf("\n 1.- A) Lista de pacientes por medico \n 2.- D) Consultas de los pacientes por fecha \n 3.- E) Numero de consultas por dia por el medico \n 4.- Salir \n");
                     printf("Elija una opcion: ");
                     scanf("%i", &opcRM);
 
