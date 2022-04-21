@@ -38,6 +38,14 @@ void Seleccionar_Paciente()
 
 }
 
+//Funciones para el catalago de cita -----------------------------------------------------------------------------------------
+void GuardarCita()
+{
+
+
+    
+}
+
 //Metodos de los menus---------------------------------------------------------------------------
 void MenuSecretaria()
 {
@@ -228,7 +236,7 @@ void MenuSecretaria()
                                         printf("\n Digite una opcion correcta...\n");
                                 }//Fin del switch expediente
 
-                            }while(opcExp); //Fin while de expediente
+                            }while(opcExp != 3); //Fin while de expediente
                             
                         break;
 
