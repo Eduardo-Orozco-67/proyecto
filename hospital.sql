@@ -32,10 +32,14 @@ create table Cita
 	num_paciente integer not null,
 	consultorio varchar not null,
 <<<<<<< HEAD
+<<<<<<< HEAD
 	fecha_hora_cita TIMESTAMP not null constraint fecha_invalida check (fecha_hora_cita < now()),
 =======
 	fecha_hora_con TIMESTAMP not null constraint fecha_invalida check (fecha > now()),
 >>>>>>> e3afe2b (corrigiendo fecha y hora)
+=======
+	fecha_hora_con TIMESTAMP not null constraint fecha_invalida check (fecha_hora_con < now()),
+>>>>>>> 3e8d457 (corrigiendo fecha y hora 2)
 	constraint Cita_pkey primary key(id_cita),
 	constraint Cita_fkey foreign key(num_paciente) references Paciente(num_paciente)
 );
