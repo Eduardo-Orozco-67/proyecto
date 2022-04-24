@@ -7,6 +7,7 @@ create database Hospital;
 
 --creacion de la tablas
 
+
 create table Paciente(
 	num_paciente integer NOT NULL,
 	nombre_p varchar NOT NULL,
