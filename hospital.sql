@@ -1,4 +1,5 @@
 
+
 --creacion de la base
 create database Hospital;
 
@@ -50,6 +51,7 @@ create table Medico
 	constraint Medico_pkey primary key(cedula)
 );
 
+
 create table Especialidad
 (
 	cns integer not NULL GENERATED ALWAYS AS IDENTITY,
@@ -65,7 +67,8 @@ create table Consulta
 	id_consulta integer not NULL GENERATED ALWAYS AS IDENTITY,
 	id_cita integer not null,
 	cedula varchar not null,
-	fecha_hora_con TIMESTAMP not null,
+	fecha_con date not null constraint fecha_invalida check (fecha_con > now()),
+	hora_con time not null,
 	consultorio_con varchar not null,
 	constraint Consulta_pkey primary key(id_consulta),
 	constraint Consulta_fkey_idCita foreign key(id_cita)
