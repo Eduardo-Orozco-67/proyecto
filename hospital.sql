@@ -43,7 +43,7 @@ create table Cita
 create table Medico
 (
 	cedula varchar not null, 
-	edad integer not null constraint edad_invalida check (edad >= 18), 
+	edad integer not null constraint edad_invalida check (edad >= 25), 
 	nombre_m varchar not null, 
 	appat_m varchar not null,
 	apmat_m varchar not null,
