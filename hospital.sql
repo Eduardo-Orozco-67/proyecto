@@ -5,6 +5,9 @@ create database Hospital;
 --Conectarse a la base de datos
 psql Hospital
 
+--cambiarse a la base datos
+\c Hospital
+
 --creacion de la tablas
 create table Paciente
 (
