@@ -1,5 +1,4 @@
 
-
 --creacion de la base
 create database Hospital;
 
