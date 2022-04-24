@@ -11,7 +11,11 @@ psql Hospital
 >>>>>>> 5194f3b (commit)
 =======
 psql Hospital
+<<<<<<< HEAD
 >>>>>>> 5194f3b (commit)
+=======
+>>>>>>> 4c72b1f0d641db90c7115c25d920258920d1a653
+>>>>>>> 886ed3bf3c9bc032acd08bd20307fa5dcda7860d
 
 --cambiarse a la base datos
 \c Hospital
@@ -73,8 +77,7 @@ create table Consulta
 	id_consulta integer not NULL GENERATED ALWAYS AS IDENTITY,
 	id_cita integer not null,
 	cedula varchar not null,
-	fecha_con date not null constraint fecha_invalida check (fecha_con > now()),
-	hora_con time not null,
+	fecha_hora_con TIMESTAMP not null,
 	consultorio_con varchar not null,
 	constraint Consulta_pkey primary key(id_consulta),
 	constraint Consulta_fkey_idCita foreign key(id_cita)
