@@ -3,7 +3,7 @@
 create database Hospital;
 
 --Conectarse a la base de datos
-psql Hospital 
+psql Hospital
 
 --cambiarse a la base datos
 \c Hospital
@@ -49,7 +49,6 @@ create table Medico
 	apmat_m varchar not null,
 	constraint Medico_pkey primary key(cedula)
 );
-
 
 create table Especialidad
 (
