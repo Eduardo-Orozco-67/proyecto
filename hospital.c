@@ -39,6 +39,55 @@ void Seleccionar_Paciente()
 
 }
 
+//CRUD Expediente ------------------------------------------------------------------------------------------------s
+void alta_expediente()
+{
+
+}
+
+void borrar_expediente()
+{
+
+}
+
+void modificar_expediente()
+{
+
+}
+
+void mostrar_expediente()
+{
+    char tab[50], cad[100];
+    int i,j,fila,columna;    
+    //Para las sentencias se usa sprintf y en automatico se declara la variable dentro del parentesis para almacenarla
+    sprintf(cad,"select * from Expediente order by num_exp");
+    printf("Instruccion SQL antes de ejecutarse: %s \n",cad); //Mostrar instruccion SQL
+    printf("\n");
+    resultado = PQexec (bd, cad); //Ejecuta linea postgres
+
+    fila = PQntuples(resultado); //filas de la tabla
+    if (fila == 0)
+    {
+    	printf ("ATENCION: La tabla está vacía\n");      	
+    }else
+    {     	
+       	columna = PQnfields(resultado); //Columnas de la tabla 
+        printf ("---------------------------------------------------------------------------\n"); 
+       	printf ("| Num_exp | Num_paciente  |    Alergias     |\n");               	
+       	for (i = 0; i < fila ; i++)
+       	{
+                printf ("---------------------------------------------------------------------------\n"); 
+              	for (j = 0; j < columna; j++)
+              	{
+                        
+                    printf("|    %s\t",PQgetvalue(resultado,i,j)); //Resultado fila y columna de la consulta
+		        }
+		    printf("\n");
+        }
+    }
+
+}
+
 //Funciones para el catalago de CITA -----------------------------------------------------------------------------------------
 void GuardarCita()
 {
@@ -639,11 +688,13 @@ void MenuSecretaria()
                                 switch(opcExp)
                                 {
                                     case 1:
-                                        //Metodo
+                                        //Metodo mostrar expediente
+                                        mostrar_expediente();
                                     break;
 
                                     case 2:
-                                        //Metodo
+                                        //Metodo borrar expediente
+
                                     break;
 
                                     case 3:
@@ -757,7 +808,7 @@ void MenuSecretaria()
                         break;
 
                         default:
-                            printf("\n Digite una opcion corretca...\n");
+                            printf("\n Digite una opcion correcta...\n");
 
                     }//Fin del switch opcR
 
@@ -781,7 +832,7 @@ void MenuSecretaria()
 void MenuMedico()
 {
     int opcM, opcCM, opcPM, opcRM;
-    int opcDiag, opcMedic, opcCrudMedico, opcCrudEspec, opcExp, opcConsulta;
+    int opcDiag, opcMedic, opcCrudMedico, opcCrudEspec, opcExp, opcConsulta, opcCruExp;
 
     do
     {
@@ -970,7 +1021,7 @@ void MenuMedico()
                             do
                             {
                                 printf("\n -----Pacientes----- \n");
-                                printf("\n 1.- Ver paciente \n 2.- Ver expediente \n 3.- Salir \n");
+                                printf("\n 1.- Ver paciente \n 2.- expedientes \n 3.- Salir \n");
                                 printf("Elija una opcion: ");
                                 scanf("%i", &opcExp);
 
@@ -982,6 +1033,38 @@ void MenuMedico()
 
                                     case 2:
                                         //Metodo ver expediente
+                                        do
+                                        {
+                                            printf("\n----- Expedientes-----");
+                                            printf("\n 1.- Alta expediente \n 2.- Modificar expediente \n 3.- Mostrar expediente \n 4.- Salir de expedientes \n");
+                                            printf("Elija una opcion:");
+                                            scanf("%i", &opcCruExp);
+
+                                            switch(opcCruExp)
+                                            {
+                                                case 1:
+                                                    //Metodo agregar expediente
+                                                break;
+
+                                                case 2:
+                                                    //Metodo modificar expediente
+                                                break;
+
+                                                case 3:
+                                                    //metodo mostrar expediente
+                                                    mostrar_expediente();
+                                                break;
+
+                                                case 4:
+                                                    printf("\n Saliendo de expedientes...\n");
+                                                break;
+
+                                                default:
+                                                    printf("\n Seleccione una opcion valida...\n");
+                                            }
+
+                                        }while(opcCruExp!=4); //Fin while cru(d) expediente
+                                        
                                     break;
 
                                     case 3:
@@ -1008,11 +1091,11 @@ void MenuMedico()
                                 switch(opcConsulta)
                                 {
                                     case 1: //Metodo ver citas
-                                        ConsultarCita;
+                                        ConsultarCita();
                                     break;
 
                                     case 2: //Metodo ver consultas
-                                        ConsultarConsulta;
+                                        ConsultarConsulta();
                                     break;
 
                                     case 3:
@@ -1098,7 +1181,8 @@ int main(int argc, char *argv[])
 
     do
     {
-        printf("\nBienvenido al hospital 'Sal vivo si puedes'\n");
+        printf("\nBienvenido al hospital:\n");
+        printf("🅂 🄰 🄻  🅅 🄸 🅅 🄾  🅂 🄸  🄿 🅄 🄴 🄳 🄴 🅂\n");
         printf("\n 1.- Secretaria \n 2.- Medico \n 3.- Salir \n ");
         printf("Elija su opcion: ");
         scanf("%opcUsuario", &opcUsuario);
