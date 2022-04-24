@@ -3,15 +3,8 @@
 create database Hospital;
 
 --Conectarse a la base de datos
-<<<<<<< HEAD
-<<<<<<< HEAD
 psql Hospital 
-=======
-psql Hospital
->>>>>>> 5194f3b (commit)
-=======
-psql Hospital
->>>>>>> 5194f3b (commit)
+
 
 --cambiarse a la base datos
 \c Hospital
