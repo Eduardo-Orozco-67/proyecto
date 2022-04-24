@@ -3,7 +3,7 @@
 create database Hospital;
 
 --Conectarse a la base de datos
-\c hospital
+psql Hospital
 
 --creacion de la tablas
 create table Paciente
@@ -92,7 +92,7 @@ create table Detalle_Paciente_Medico
 (
 	cedula varchar not null,
 	num_paciente integer not null,
-	constraint Detalle_Paciente_Medico_pkey primary key(cedula, num_paciente),
+	constraint Detalle_Paciente_Medico_pkey pgit revert -m 1 <merge-commit-hash>rimary key(cedula, num_paciente),
 	constraint Detalle_Medico_fkey foreign key(cedula)
 	references Medico(cedula) match simple on update no action on delete cascade,
 	constraint Detalle_Paciente_fkey foreign key(num_paciente)
