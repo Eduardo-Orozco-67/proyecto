@@ -34,7 +34,8 @@ create table Cita
 	id_cita integer not NULL GENERATED ALWAYS AS IDENTITY,
 	num_paciente integer not null,
 	consultorio varchar not null,
-	fecha_hora_cita TIMESTAMP not null constraint fecha_invalida check (fecha_hora_cita < now()),
+	fecha date not null constraint fecha_invalida check (fecha > now()),
+	hora time not null,
 	constraint Cita_pkey primary key(id_cita),
 	constraint Cita_fkey foreign key(num_paciente) references Paciente(num_paciente)
 );
