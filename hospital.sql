@@ -34,6 +34,7 @@ create table Cita
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	fecha_hora_cita TIMESTAMP not null constraint fecha_invalida check (fecha_hora_cita < now()),
 =======
 	fecha_hora_con TIMESTAMP not null constraint fecha_invalida check (fecha > now()),
@@ -44,6 +45,9 @@ create table Cita
 =======
 	fecha_hora_cita TIMESTAMP not null constraint fecha_invalida check (fecha_hora_con < now()),
 >>>>>>> 398c39a (corrigiendo fecha y hora)
+=======
+	fecha_hora_cita TIMESTAMP not null constraint fecha_invalida check (fecha_hora_cita < now()),
+>>>>>>> a1f78ba (corrigiendo fecha y hora)
 	constraint Cita_pkey primary key(id_cita),
 	constraint Cita_fkey foreign key(num_paciente) references Paciente(num_paciente)
 );
