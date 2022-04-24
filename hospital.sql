@@ -3,7 +3,10 @@
 create database Hospital;
 
 --Conectarse a la base de datos
-\c hospital
+psql Hospital
+
+--cambiarse a la base datos
+\c Hospital
 
 --creacion de la tablas
 create table Paciente
@@ -31,7 +34,8 @@ create table Cita
 	id_cita integer not NULL GENERATED ALWAYS AS IDENTITY,
 	num_paciente integer not null,
 	consultorio varchar not null,
-	fecha_hora_cita TIMESTAMP not null constraint fecha_invalida check (fecha_hora_cita < now()),
+	fecha date not null constraint fecha_invalida check (fecha > now()),
+	hora time not null,
 	constraint Cita_pkey primary key(id_cita),
 	constraint Cita_fkey foreign key(num_paciente) references Paciente(num_paciente)
 );
@@ -45,7 +49,6 @@ create table Medico
 	apmat_m varchar not null,
 	constraint Medico_pkey primary key(cedula)
 );
-
 
 create table Especialidad
 (
@@ -90,7 +93,7 @@ create table Detalle_Paciente_Medico
 (
 	cedula varchar not null,
 	num_paciente integer not null,
-	constraint Detalle_Paciente_Medico_pkey primary key(cedula, num_paciente),
+	constraint Detalle_Paciente_Medico_pkey pgit revert -m 1 <merge-commit-hash>rimary key(cedula, num_paciente),
 	constraint Detalle_Medico_fkey foreign key(cedula)
 	references Medico(cedula) match simple on update no action on delete cascade,
 	constraint Detalle_Paciente_fkey foreign key(num_paciente)
