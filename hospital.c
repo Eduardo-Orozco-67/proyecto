@@ -1254,7 +1254,7 @@ int main(int argc, char *argv[])
     printf("\t  ██████╦╝██║███████╗██║░╚███║░░╚██╔╝░░███████╗██║░╚███║██║██████╔╝╚█████╔╝\n");
     printf("\t  ╚═════╝░╚═╝╚══════╝╚═╝░░╚══╝░░░╚═╝░░░╚══════╝╚═╝░░╚══╝╚═╝╚═════╝░░╚════╝░\n\n");
     printf("\n\n");
-    menu_pricipal();
-    MPI_Finalize () ;
+    menu_principal();
+    MPI_Finalize ;
     return 0;
 }//Fin del Main
