@@ -5,6 +5,7 @@
 #include <time.h>
 #include <libpq-fe.h>
 #include <mpi.h>
+
 // mpicc -o crud hospital.c -I /usr/include/postgresql/ -lpq
 // ./crud
 
