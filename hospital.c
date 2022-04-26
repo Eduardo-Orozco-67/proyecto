@@ -1168,9 +1168,7 @@ void MenuMedico()
 
 }//Fin de menu medico
 
-
-//main
-int main(int argc, char *argv[])
+int menu_principal()
 {
     int opcUsuario;
     char host[15] = "localhost";
@@ -1241,5 +1239,20 @@ int main(int argc, char *argv[])
         }//Fin del switch principal
 
     } while (opcUsuario!=3);
-
+}
+//main
+int main(int argc, char *argv[])
+{
+    MPI_Init(& argc ,& argv ) ;
+    printf("\n\n");
+    printf("\t  ██████╗░██╗███████╗███╗░░██╗██╗░░░██╗███████╗███╗░░██╗██╗██████╗░░█████╗░░\n");
+    printf("\t  ██╔══██╗██║██╔════╝████╗░██║██║░░░██║██╔════╝████╗░██║██║██╔══██╗██╔══██╗\n");
+    printf("\t  ██████╦╝██║█████╗░░██╔██╗██║╚██╗░██╔╝█████╗░░██╔██╗██║██║██║░░██║██║░░██║\n");
+    printf("\t  ██╔══██╗██║██╔══╝░░██║╚████║░╚████╔╝░██╔══╝░░██║╚████║██║██║░░██║██║░░██║\n");
+    printf("\t  ██████╦╝██║███████╗██║░╚███║░░╚██╔╝░░███████╗██║░╚███║██║██████╔╝╚█████╔╝\n");
+    printf("\t  ╚═════╝░╚═╝╚══════╝╚═╝░░╚══╝░░░╚═╝░░░╚══════╝╚═╝░░╚══╝╚═╝╚═════╝░░╚════╝░\n\n");
+    printf("\n\n");
+    menu_pricipal();
+    MPI_Finalize () ;
+    return 0;
 }//Fin del Main
