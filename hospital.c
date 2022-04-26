@@ -1168,9 +1168,7 @@ void MenuMedico()
 
 }//Fin de menu medico
 
-
-//main
-int main(int argc, char *argv[])
+int menu_principal()
 {
     int opcUsuario;
     char host[15] = "localhost";
@@ -1241,5 +1239,11 @@ int main(int argc, char *argv[])
         }//Fin del switch principal
 
     } while (opcUsuario!=3);
+}
+//main
+int main(int argc, char *argv[])
+{
+    menu_principal();
+    return 0;
 
 }//Fin del Main

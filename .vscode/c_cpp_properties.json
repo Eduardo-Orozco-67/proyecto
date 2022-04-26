@@ -4,7 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/include/postgresql"
+                "/usr/include/postgresql",
+                "/usr/lib/x86_64-linux-gnu/openmpi/include"
             ],
             "defines": [
                 "_DEBUG",
