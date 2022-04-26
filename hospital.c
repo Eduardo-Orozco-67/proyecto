@@ -4,7 +4,9 @@
 #include <string.h>
 #include <time.h>
 #include <libpq-fe.h>
-// gcc -o crud hospital.c -I /usr/include/postgresql/ -lpq
+#include <mpi.h>
+
+// mpicc -o crud hospital.c -I /usr/include/postgresql/ -lpq
 // ./crud
 
 /*conectar con postgres 
