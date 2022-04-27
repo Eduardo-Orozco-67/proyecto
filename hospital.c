@@ -20,7 +20,44 @@ PGresult *ressu;
 //Metodos para el menu de la secretaria --------------------------------------------------------------------------------------------
 void Alta_Paciente()    
 {
+    int num_paciente, edad_p;
+    char nombre_p[50], appat_p[50], apmat_p[50], direccion_p[60], addPaciente[700];
+    setbuf(stdin, NULL);
 
+    printf("Listado de pacientes: \n\n");
+
+    printf("Ingresar el nombre del paciente: \n");
+    scanf("%s", nombre_p);
+    printf("Ingresar el apellido paterno del paciente: \n");
+    scanf("%s", appat_p);
+    printf("Ingresar el apellido materno del paciente: \n");
+    scanf("%s", apmat_p);
+    setbuf(stdin, NULL);
+    sprintf (addPaciente, "select num_paciente from paciente where nombre_p = '%s' and appat_p = '%s' and apmat_p = '%s'", nombre_p, appat_p, apmat_p);//busca si ya existe el cliente en nustra bdd
+    resultado = PQexec(bd, addPaciente); //Ejecuta linea postgres
+    //Si es uno quiere decir que si lo encontro, por lo tanto ya no se piden los demás datos
+    if (PQntuples (resultado) == 1){
+    	printf("\nPaciente encontrado\n");
+        printf("\nIngrese otro paciente!\n\n");
+    }else{
+
+        printf("Ingresar la edad del paciente: \n");
+        scanf("%i", &edad_p);
+        printf("Ingresar la direccion del cliente: \n");
+        scanf("%s", direccion_p);
+
+        sprintf(addPaciente, "insert into Paciente ( nombre_p, appat_p, apmat_p, edad_p, direccion) values ( '%s', '%s', '%s', '%i', '%s')", nombre_p, appat_p, apmat_p, edad_p, direccion_p);
+        printf("Instruccion SQL antes de ejecutarse: %s", addPaciente);
+        resultado = PQexec(bd, addPaciente);
+
+        if (PQresultStatus(resultado) == PGRES_COMMAND_OK)
+        {
+            printf("\n\nInserccion exitosa!\n\n");
+        }else{
+            printf("Inserccion sin exito! \n\n");
+        }
+
+    }//fin de la validacion 
 }
 
 void Actualizar_Paciente()
@@ -36,8 +73,83 @@ void Eliminar_Paciente()
 void Seleccionar_Paciente()
 {
 
+    setbuf(stdin, NULL);
+    char selecPaciente[500];
+    int opcSelecPac = 0, bNum_Paciente, bFila, bColumna, a, b, opcVer;
+    printf("Seleccionar una de las opciones anteriores: \n");
+    do
+    {
+        printf(" 1.- Selecionar todos los datos de un paciente en especifico \n 2.- Seleccionar un dato en especifico que desea ver de un paciente en especifico \n 3.- Ver los datos de todos los pacientes\n\n");
+        scanf("%i", &opcSelecPac);
+        switch (opcSelecPac)
+        {
+            case 1: //caso para selecionar todos los datos de un paciente en especifico
+            
+                printf("Opcion uno:\n\n");
+                printf("Ingresar de favor el numero del paciente deseado del cual desea ver todos los datos: \n");
+                scanf("%i", &bNum_Paciente);
+                sprintf(selecPaciente, "select * from Paciente where num_paciente = %i", bNum_Paciente);
+                resultado = PQexec(bd, selecPaciente);
+                printf("Oopcion SQL antes de ejecutarse: %s\n\n", selecPaciente);
+                if (PQresultStatus(resultado) == PGRES_COMMAND_OK)
+                {
+                    printf("Pacientes encontrado! \n\n");
+                }else{
+                    printf("Pacienste no encontrado! \n\n");
+                }
 
-}
+                if (resultado != NULL)
+                {
+                    
+                    bFila = PQntuples(resultado);
+                    bColumna = PQnfields(resultado);
+
+                    for (a = 0; a < bFila; a++)
+                    {
+                        for ( b = 0; b < bColumna; b++)
+                        {
+                            printf("%s\t | \t ", PQgetvalue(resultado, a, b));
+                        }//fin del for bColumna
+                        printf("\n\n");
+                    }//fin del for bFila
+                }//fin del if-null
+                
+
+            break;
+
+            case 2: //opcion para ver un dato en especifico de un cliente en especifico
+                
+                setbuf(stdin, NULL);
+                printf("Opcion dos:\n\n");
+                printf("Ingresar de favor el numero del paciente deseado del cual desea ver un dato en especifico: \n");
+                scanf("%i", &bNum_Paciente);
+                printf("Seleccionar una de las opciones ofertadas: \n");
+                printf("1.- Nombre \n 3. Apellido Paterno \n 4. Apellido Materno \n 5. Edad \n 6. Direccion \n\n");
+                scanf("%i", &opcVer);
+                switch (opcVer)
+                {
+                case 1:
+                    sprintf(selecPaciente, "select nombre_p from Paciente where num_paciente = %i", bNum_Paciente);
+                    break;
+                
+                default:
+                    break;
+                }
+
+
+            break;
+
+            case 3:
+            break;
+
+        
+        default:
+            break;
+        }
+
+    } while (opcSelecPac != 4);
+    
+}   
 
 //CRUD Expediente ------------------------------------------------------------------------------------------------s
 void alta_expediente()
@@ -178,7 +290,7 @@ void GuardarCita()
 //Funcion para modificar datos de la cita
 void ModificarCita()
 {
-    int resp, mod, modcita, num_paciente, i, j, columna, fila;    
+    int resp, mod, modcita, num_paciente, i, j, columna, fila;   
     char edit[500], buspac[300], nombre[20], appat[20], apmat[20], fecha[30], hora[20], consultorio[10], busnumpac[200], buspacit[200], busnum[200];
     do
     {
@@ -549,6 +661,7 @@ void MenuSecretaria()
                                 switch(opcPac)
                                 {
                                     case 1:
+                                        Alta_Paciente();
                                         //Metodo
                                     break;
 
@@ -561,6 +674,7 @@ void MenuSecretaria()
                                     break;
 
                                     case 4:
+                                        Seleccionar_Paciente();
                                         //Metodo
                                     break;
 
