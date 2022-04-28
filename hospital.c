@@ -4,7 +4,9 @@
 #include <string.h>
 #include <time.h>
 #include <libpq-fe.h>
-// gcc -o crud hospital.c -I /usr/include/postgresql/ -lpq
+#include <mpi.h>
+
+// mpicc -o crud hospital.c -I /usr/include/postgresql/ -lpq
 // ./crud
 
 /*conectar con postgres 
@@ -1282,9 +1284,7 @@ void MenuMedico()
 
 }//Fin de menu medico
 
-
-//main
-int main(int argc, char *argv[])
+int menu_principal()
 {
     int opcUsuario;
     char host[15] = "localhost";
@@ -1355,5 +1355,20 @@ int main(int argc, char *argv[])
         }//Fin del switch principal
 
     } while (opcUsuario!=3);
-
+}
+//main
+int main(int argc, char *argv[])
+{
+    MPI_Init(& argc ,& argv ) ;
+    printf("\n\n");
+    printf("\t  ██████╗░██╗███████╗███╗░░██╗██╗░░░██╗███████╗███╗░░██╗██╗██████╗░░█████╗░░\n");
+    printf("\t  ██╔══██╗██║██╔════╝████╗░██║██║░░░██║██╔════╝████╗░██║██║██╔══██╗██╔══██╗\n");
+    printf("\t  ██████╦╝██║█████╗░░██╔██╗██║╚██╗░██╔╝█████╗░░██╔██╗██║██║██║░░██║██║░░██║\n");
+    printf("\t  ██╔══██╗██║██╔══╝░░██║╚████║░╚████╔╝░██╔══╝░░██║╚████║██║██║░░██║██║░░██║\n");
+    printf("\t  ██████╦╝██║███████╗██║░╚███║░░╚██╔╝░░███████╗██║░╚███║██║██████╔╝╚█████╔╝\n");
+    printf("\t  ╚═════╝░╚═╝╚══════╝╚═╝░░╚══╝░░░╚═╝░░░╚══════╝╚═╝░░╚══╝╚═╝╚═════╝░░╚════╝░\n\n");
+    printf("\n\n");
+    menu_principal();
+    MPI_Finalize ;
+    return 0;
 }//Fin del Main
