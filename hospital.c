@@ -57,6 +57,7 @@ void modificar_expediente()
 
 }
 
+
 void mostrar_expediente()
 {
     char tab[50], cad[100];
