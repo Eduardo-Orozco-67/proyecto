@@ -73,12 +73,12 @@ void Seleccionar_Paciente()
 {
     setbuf(stdin, NULL);
     char selecPaciente[500];
-    int opcSelecPac = 0, bNum_Paciente, bFila, bColumna, a, b, opcVer;
+    int opcSelecPac, bNum_Paciente, bFila, bColumna, a, b, opcVer;
     printf("Seleccionar una de las opciones anteriores: \n");
     do
     {
         printf(" 1.- Selecionar todos los datos de un paciente en especifico \n 2.- Seleccionar un dato en especifico que desea ver de un paciente en especifico \n 3.- Ver los datos de todos los pacientes\n\n");
-        scanf("%i", &opcSelecPac);
+        scanf("%d", &opcSelecPac);
         switch (opcSelecPac)
         {
             case 1: //caso para selecionar todos los datos de un paciente en especifico
@@ -136,6 +136,9 @@ void Seleccionar_Paciente()
 
             case 3:
             break;
+
+            case 4:
+                break;
 
         
         default:
@@ -702,7 +705,8 @@ void alta_medico()
         {
             printf("\nDesea agregar otro medico?:\n");
             printf("1.- Si 2.-No\n");
-            scanf("%i", &resp);
+            printf("teclee numero\n");
+            scanf("%d", &resp);
 
         }while(resp == 1 && resp == 2); //Segundo while por si el suario desea ingresar otro medico
 
