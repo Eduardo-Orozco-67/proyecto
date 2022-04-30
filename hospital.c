@@ -1287,6 +1287,7 @@ void MenuSecretaria()
 
 }//Fin de menusecretaria
 
+
 void MenuMedico()
 {
     int opcM, opcCM, opcPM, opcRM;
