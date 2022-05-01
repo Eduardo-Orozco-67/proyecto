@@ -1452,7 +1452,7 @@ void MenuMedico()
 
                                         switch (opcCrudMedico)
                                         {
-<<<<<<< HEAD
+
                                             printf("\n-----Medico-----\n");
                                             printf("\n 1.- Alta medico \n 2.- Baja medico \n 3.- Modificar medico \n 4.- Consultar medicos \n 5.- Salir \n");
                                             printf("Elija una opcion: ");
@@ -1489,7 +1489,7 @@ void MenuMedico()
                                             }
 
                                         }while(opcCrudMedico!=5);
-=======
+
                                         case 1:
                                             // Metodo alta medico
                                             alta_medico();
@@ -1519,7 +1519,7 @@ void MenuMedico()
                                         }
 
                                     } while (opcCrudMedico != 5);
->>>>>>> origin/master
+
 
                                     break;
 
@@ -1566,13 +1566,13 @@ void MenuMedico()
                                     printf("\n Saliendo de medicos...\n");
                                     break;
 
-<<<<<<< HEAD
+
                                     default:
                                         printf("\n Digite una opcion correcta...\n");
-=======
+
                                 default:
                                     printf("\n Digite una opcion corretca...\n");
->>>>>>> origin/master
+
                                 }
 
                             } while (opcMedic != 3); // Fin del while medicos
