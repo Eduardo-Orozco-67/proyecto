@@ -1245,7 +1245,7 @@ void MenuMedico()
                                                 break;
 
                                                 default:
-                                                    printf("\n Digite una opcion corretca...\n");
+                                                    printf("\n Digite una opcion correcta...\n");
                                             }
 
                                         }while(opcCrudMedico!=5);
@@ -1296,7 +1296,7 @@ void MenuMedico()
                                     break;
 
                                     default:
-                                        printf("\n Digite una opcion corretca...\n");
+                                        printf("\n Digite una opcion correcta...\n");
                                 }
 
                             }while(opcMedic!=3); //Fin del while medicos 
