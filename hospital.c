@@ -25,13 +25,14 @@ void Alta_Paciente()
     char nombre_p[50], appat_p[50], apmat_p[50], direccion_p[60], addPaciente[700];
     setbuf(stdin, NULL);
 
-    printf("Listado de pacientes: \n\n");
-
-    printf("Ingresar el nombre del paciente: \n");
+    printf("\n==============="); 
+    printf("|GUARDAR PACIENTE|"); 
+    printf ("===============\n"); 
+    printf("Ingresar el nombre del paciente: ");
     scanf("%s", nombre_p);
-    printf("Ingresar el apellido paterno del paciente: \n");
+    printf("Ingresar el apellido paterno del paciente: ");
     scanf("%s", appat_p);
-    printf("Ingresar el apellido materno del paciente: \n");
+    printf("Ingresar el apellido materno del paciente: ");
     scanf("%s", apmat_p);
     setbuf(stdin, NULL);
     sprintf (addPaciente, "select num_paciente from paciente where nombre_p = '%s' and appat_p = '%s' and apmat_p = '%s'", nombre_p, appat_p, apmat_p);//busca si ya existe el cliente en nustra bdd
@@ -41,13 +42,11 @@ void Alta_Paciente()
     	printf("\nPaciente encontrado\n");
         printf("\nIngrese otro paciente!\n\n");
     }else{
-
-        printf("Ingresar la edad del paciente: \n");
+        printf("Ingresar la edad del paciente: ");
         scanf("%i", &edad_p);
-        printf("Ingresar la direccion del cliente: \n");
+        printf("Ingresar la direccion del cliente: ");
         scanf("%s", direccion_p);
-
-        sprintf(addPaciente, "insert into Paciente ( nombre_p, appat_p, apmat_p, edad_p, direccion) values ( '%s', '%s', '%s', '%i', '%s')", nombre_p, appat_p, apmat_p, edad_p, direccion_p);
+        sprintf(addPaciente, "insert into Paciente (nombre_p, appat_p, apmat_p, edad_p, direccion) values ( '%s', '%s', '%s', %i, '%s')", nombre_p, appat_p, apmat_p, edad_p, direccion_p);
         printf("Instruccion SQL antes de ejecutarse: %s", addPaciente);
         resultado = PQexec(bd, addPaciente);
 
@@ -57,7 +56,6 @@ void Alta_Paciente()
         }else{
             printf("Inserccion sin exito! \n\n");
         }
-
     }//fin de la validacion 
 }
 
@@ -73,15 +71,14 @@ void Eliminar_Paciente()
 
 void Seleccionar_Paciente()
 {
-
     setbuf(stdin, NULL);
     char selecPaciente[500];
-    int opcSelecPac, bNum_Paciente, bFila, bColumna, a, b, opcVer;
+    int opcSelecPac = 0, bNum_Paciente, bFila, bColumna, a, b, opcVer;
     printf("Seleccionar una de las opciones anteriores: \n");
     do
     {
         printf(" 1.- Selecionar todos los datos de un paciente en especifico \n 2.- Seleccionar un dato en especifico que desea ver de un paciente en especifico \n 3.- Ver los datos de todos los pacientes\n\n");
-        scanf("%d", &opcSelecPac);
+        scanf("%i", &opcSelecPac);
         switch (opcSelecPac)
         {
             case 1: //caso para selecionar todos los datos de un paciente en especifico
@@ -100,8 +97,7 @@ void Seleccionar_Paciente()
                 }
 
                 if (resultado != NULL)
-                {
-                    
+                {                    
                     bFila = PQntuples(resultado);
                     bColumna = PQnfields(resultado);
 
@@ -114,8 +110,6 @@ void Seleccionar_Paciente()
                         printf("\n\n");
                     }//fin del for bFila
                 }//fin del if-null
-                
-
             break;
 
             case 2: //opcion para ver un dato en especifico de un cliente en especifico
@@ -142,9 +136,6 @@ void Seleccionar_Paciente()
 
             case 3:
             break;
-
-            case 4:
-                break;
 
         
         default:
@@ -711,8 +702,7 @@ void alta_medico()
         {
             printf("\nDesea agregar otro medico?:\n");
             printf("1.- Si 2.-No\n");
-            printf("teclee numero\n");
-            scanf("%d", &resp);
+            scanf("%i", &resp);
 
         }while(resp == 1 && resp == 2); //Segundo while por si el suario desea ingresar otro medico
 
@@ -1635,7 +1625,7 @@ void MenuMedico()
 
 }//Fin de menu medico
 
-int menu_principal()
+void menu_principal()
 {
     int opcUsuario;
     char host[15] = "localhost";
@@ -1650,12 +1640,11 @@ int menu_principal()
         printf("🅂 🄰 🄻  🅅 🄸 🅅 🄾  🅂 🄸  🄿 🅄 🄴 🄳 🄴 🅂\n");
         printf("\n 1.- Secretaria \n 2.- Medico \n 3.- Salir \n ");
         printf("Elija su opcion: ");
-        scanf("%opcUsuario", &opcUsuario);
+        scanf("%i", &opcUsuario); 
 
-        switch(opcUsuario)
+        switch(opcUsuario)      
         {
-            case 1: //Secretaria
-
+            case 1: //Secretaria 
                 printf ("Ingrese su usuario: ");
                 scanf ("%s",usuario);
                 printf ("Ingrese la contraseña: ");
@@ -1672,7 +1661,6 @@ int menu_principal()
 	            } else {
                     printf("Usuario o contraseña incorrectos\n");
 	            } //Fin de la validacion de conexion a la BD
-
             break;
 
             case 2: //Medicos 
@@ -1702,15 +1690,17 @@ int menu_principal()
 
             default:
                 printf("\n Digite una opcion correcta...\n");
+                break;
 
         }//Fin del switch principal
 
-    } while (opcUsuario!=3);
+    }while (opcUsuario!=3);
 }
+
 //main
 int main(int argc, char *argv[])
 {
-    MPI_Init(& argc ,& argv ) ;
+    MPI_Init(& argc ,& argv );
     printf("\n\n");
     printf("\t  ██████╗░██╗███████╗███╗░░██╗██╗░░░██╗███████╗███╗░░██╗██╗██████╗░░█████╗░░\n");
     printf("\t  ██╔══██╗██║██╔════╝████╗░██║██║░░░██║██╔════╝████╗░██║██║██╔══██╗██╔══██╗\n");
