@@ -1,7 +1,7 @@
 --Procedimiento almacenado para hospital
 
+-- PL para que cuando se guarde una cita
 -- un paciente no puede tener mas de dos citas agendadas activas 
-
 drop procedure AgendarCITA;
 
 DROP PROCEDURE IF Exists AgendarCita (IN vpaciente INTEGER, IN vcon VARCHAR, IN vfecha varchar, IN vhora varchar, IN vestado VARCHAR, INOUT pRes INTEGER);
@@ -52,10 +52,8 @@ Call AgendarCita (1, '10', '10-05-2022', '17:00:00', NULL);
 
 
 -- PL para que cuando se guarde un diagnostico la cita se ponga como realizada
---Modificar la tabla de expediente 
 
-
---Agregar expdiente -- NOTA es tabla modificada por error :(
+--Agregar expdiente --
 insert into Expediente values (1, 1, 'Camaron');
 insert into consulta (id_cita, cedula, fecha_con, hora_con, consultorio_con) values(2, 'CJT45', '05-05-2022', '13:00:00', 'las lomas'); 
 
