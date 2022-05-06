@@ -8,7 +8,7 @@ DROP PROCEDURE IF Exists AgendarCita (IN vpaciente INTEGER, IN vcon VARCHAR, IN 
 
 drop procedure AgendarCita;
 
-CREATE PROCEDURE AgendarCita ( IN vpaciente INTEGER, IN vcon VARCHAR, IN vfecha DATE, IN vhora TIME, INOUT pRes VARCHAR) AS $$
+CREATE PROCEDURE AgendarCita ( IN vpaciente INTEGER, IN vcon VARCHAR, IN vfecha DATE, IN vhora TIME, INOUT pRes INTEGER) AS $$
 	DECLARE 
 		vpaciente alias for $1;
 		vcon alias for $2;
@@ -17,7 +17,7 @@ CREATE PROCEDURE AgendarCita ( IN vpaciente INTEGER, IN vcon VARCHAR, IN vfecha 
 		vestado alias for $5;
 		vreg record;
 		vnuevo varchar;
-		vban varchar;
+		vban integer;
 	BEGIN
 		-- Selecciona el paciente
 		Select into vreg * from Paciente where num_paciente = vpaciente for update;
@@ -28,18 +28,18 @@ CREATE PROCEDURE AgendarCita ( IN vpaciente INTEGER, IN vcon VARCHAR, IN vfecha 
                     --buscar una cita con ese id y que este activa 
                     select into vreg * from cita where num_paciente = vpaciente and estado = 'activo' for update;
                     IF FOUND THEN  
-                        vban:= 'Error ya se ha agendado una cita y esta activa';
+                        vban:= 0;
                         Rollback;
                     ELSE
-                        --Realiza la insercion de la cita  
+                        --Realiza la insercion de la cita   
                         vnuevo := 'activo';      
                         Insert into Cita (num_paciente,consultorio,fecha,hora,estado) values ( vpaciente, vcon, vfecha, vhora, vnuevo);					
-                        vban := '¡La cita ha sido agendada con exito!';
+                        vban := 1; 
                         Commit;
                     END IF;
                     pRes := vban;
                 ELSE
-                    vban:= 'Error la fecha es incorrecta';
+                    vban:= 0;
 					Rollback;                        
                 END IF;
                 pRes := vban;

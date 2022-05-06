@@ -671,8 +671,8 @@ void mostrar_expediente()
 
 void GuardarCita()
 {
-    int num_paciente, resp;
-    char consultorio[10], fechac[20], hora[20], nombre[20], appat[20], apmat[20], buspac[200], alta[200];
+    int num_paciente, resp, prespl;
+    char presplc [100], consultorio[10], fechac[20], hora[20], nombre[20], appat[20], apmat[20], buspac[200], alta[200];
 
     time_t t;
     char fecha[100];
@@ -684,7 +684,7 @@ void GuardarCita()
 
     do
     {
-        // Buscar el cliente por nombre completo
+        //Buscar el cliente por nombre completo 
         printf("\n===============");
         printf("|AGENDAR UNA CITA|");
         printf("===============\n");
@@ -715,26 +715,28 @@ void GuardarCita()
             printf("\nIngrese el consultorio: ");
             scanf("%[^\n]", consultorio);
             setbuf(stdin, NULL); // Limpiar el buffer
-
-            // Condicion para que la fecha sea mayor o igual a la del dia de hoy ***********************MODIFICAR CONDICION PARA LA FECHA
-            do
-            {
-                printf("Ingrese fecha de la cita (DD-MM-AAAA): ");
-                scanf("%s", fechac);
-                setbuf(stdin, NULL); // Limpiar el buffer
-            } while (fechac >= fecha);
-
+            printf("Ingrese fecha de la cita (DD-MM-AAAA): ");
+            scanf("%s", fechac);
+            setbuf(stdin, NULL); // Limpiar el buffer
             printf("Ingrese hora de la cita (HH:MM:SS): ");
             scanf("%s", hora);
             setbuf(stdin, NULL); // Limpiar el buffer
 
             // Para las sentencias se usa sprintf y en automatico se declara la variable dentro del parentesis para almacenarla
-            sprintf(alta, "insert into Cita (num_paciente, consultorio, fecha, hora) values (%i, '%s', '%s', '%s');", num_paciente, consultorio, fechac, hora);
-
+            sprintf(alta, "Call AgendarCita (%i, '%s', '%s', '%s', NULL);", num_paciente, consultorio, fechac, hora);            
             printf("\nInstruccion SQL antes de ejecutarse: %s \n", alta); // Mostrar instruccion SQL
             printf("\n");
-            resultado = PQexec(bd, alta); // Ejecuta linea postgres
-            printf("La cita ha sido agendada\n");
+            resultado = PQexec(bd, alta); // Ejecuta linea postgres            
+            prespl = strtol(PQgetvalue(resultado, 0, 0), NULL, 10);
+            //printf ("\nEl valor de retorno es: %i", prespl);
+            if (prespl == 0)
+            {
+                printf("ATENCION: Error al agendar la cita\n"); 
+            }
+            else            
+            {
+                printf("¡La cita ha sido agendada!\n");
+            }            
 
             // fin del else del if PQntuples donde se busca el paciente
         }
@@ -1148,7 +1150,6 @@ void ModificarConsulta()
         {
             printf("\n ATENCION: este paciente NO ha sido ingresado.\n");
         }
-
         // Validar si el usuario quiere modificar otro registro
         do
         {
@@ -1640,6 +1641,119 @@ void consultar_medico()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+//-------------------------------------------------------------FUNCIONES PARA LAS CONSULTAS - REPORTES
+void Consulta_A() 
+{
+    char con1[1000], cedula [10], busced[200]; 
+    int i,j,fila,columna, opc;
+    do
+    {
+        printf ("\n");
+        printf("\t REPORTRES DEL SISTEMA\n");
+        printf ("\nLista de pacientes de cada medico\n\n");
+        printf ("Ingrese la cedula del medico: ");
+        scanf ("%s", cedula);
+        setbuf(stdin, NULL); // Limpiar el buffer
+        // Sentencia SQL para saber si el paciente ya ha sido registrado
+        sprintf(busced, "Select * from medico where cedula = '%s';", cedula);
+        ress = PQexec(bd, busced); // Ejecuta linea postgres
+        //Evaluar que el medico
+        if (PQntuples(ress) == 0)
+        {
+            printf ("\nATENCION: el medico no ha sido encontrado\n");
+        }
+        else 
+        {
+            printf ("\nMedico encontrado\n");
+            sprintf(con1,"select p.num_paciente, p.nombre_p, p.appat_p, p.apmat_p, m.cedula, m.nombre_m, m.appat_m, m.apmat_m from paciente p inner join cita ci on p.num_paciente = ci.num_paciente   inner join consulta co on ci.id_cita = co.id_cita inner join medico m on m.cedula = co.cedula where m.cedula = '%s';", cedula);
+            printf("Instruccion SQL antes de ejecutarse: %s \n",con1); //Mostrar instruccion SQL
+            printf("\n");
+            resultado = PQexec (bd, con1); //Ejecuta linea postgres
+            
+            fila = PQntuples(resultado); //filas de la tabla
+            if (fila == 0)
+            {
+                printf ("La tabla está vacía\n");      	
+            }
+            else
+            {     	
+                columna = PQnfields(resultado); //Columnas de la tabla
+                printf("--------------------------------------------------------------------------------------------------------------------------\n");   
+                printf ("| Paciente |    Nombre   |            Apellidos        |     Cedula    |     Medico    |            Apellidos        |\n");            	
+                for (i = 0; i < fila ; i++)
+                {
+                    printf("--------------------------------------------------------------------------------------------------------------------------\n");
+                    for (j = 0; j < columna; j++)
+                    {
+                        printf("     %s\t",PQgetvalue(resultado,i,j)); //Resultado fila y columna de la consulta
+                    }
+                printf("\n");
+                }
+            }
+
+        }
+        // Validar si el usuario quiere modificar ver otro medico
+        do
+        {
+            printf("\n¿Desea ver la lista de pacientes de otro medico?\n"); 
+            printf("1.- Si \n2.- No");
+            printf("\nOpcion: ");
+            scanf("%i", &opc);
+            setbuf(stdin, NULL); // Limpiar el buffer
+        } while (opc != 1 && opc != 2);
+    } while (opc == 1);
+
+}
+
+void consulta_e()
+{
+    char consulta[400], fecha[50];
+    int i,j,fila,columna;
+
+    setbuf(stdin, NULL); 
+    printf("Ingrese fecha de la cita (DD-MM-AAAA): ");
+    scanf("%s", fecha);
+    setbuf(stdin, NULL);
+
+    sprintf(consulta, "select med.cedula, med.nombre_m,med.appat_m, med.apmat_m, med.edad, count(con.id_consulta) as consultas from consulta con INNER JOIN medico med ON con.cedula = med.cedula where con.fecha_con = '%s' GROUP BY med.cedula;", fecha);
+
+    resultado = PQexec(bd, consulta);
+    printf("\n");
+
+    fila = PQntuples(resultado); // filas de la tabla
+    if (fila == 0)
+    {
+        printf("ATENCION: La tabla está vacía\n");
+    }
+    else
+    {
+        columna = PQnfields(resultado); // Columnas de la tabla
+        printf("--------------------------------------------------------------------------------------\n");
+        printf("|    Cedula     | Nombre medico | Apellido pat  | Apellido mat  |  Edad  | Consultas |\n");
+        for (i = 0; i < fila; i++)
+        {
+            printf("--------------------------------------------------------------------------------------\n");
+            for (j = 0; j < columna; j++)
+            {
+                printf("|    %s\t", PQgetvalue(resultado, i, j)); // Resultado fila y columna de la consulta
+            }
+            printf("\n");
+        }
+    }
+}
+
+
 //░█▀▀▀█ ░█─░█ ░█▀▀█ ░█▀▄▀█ ░█▀▀▀ ░█▄─░█ ░█─░█ ░█▀▀▀█
 //─▀▀▀▄▄ ░█─░█ ░█▀▀▄ ░█░█░█ ░█▀▀▀ ░█░█░█ ░█─░█ ─▀▀▀▄▄
 //░█▄▄▄█ ─▀▄▄▀ ░█▄▄█ ░█──░█ ░█▄▄▄ ░█──▀█ ─▀▄▄▀ ░█▄▄▄█
@@ -1958,8 +2072,8 @@ void MenuSecretaria()
                             // Metodo
                             break;
 
-                        case 3:
-                            // Metodo
+                        case 3: //Metodo consulta E
+                            consulta_e();
                             break;
 
                         case 4:
@@ -2327,16 +2441,16 @@ void MenuMedico()
 
                         switch (opcRM)
                         {
-                        case 1:
-                            // Metodo A)
+                        case 1: // Metodo A)                            
+                            Consulta_A ();
                             break;
 
                         case 2:
                             // Metodo D)
                             break;
 
-                        case 3:
-                            // Metodo E)
+                        case 3: // Metodo E)                            
+                            consulta_e();
                             break;
 
                         case 4:
@@ -2375,7 +2489,7 @@ int menu_principal()
     int opcUsuario;
     char host[15] = "localhost";
     char puerto[5] = "5432";
-    char database[15] = "hospital";
+    char database[15] = "hospital1";
     char usuario[20];
     char password[20];
 
