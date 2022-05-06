@@ -8,10 +8,9 @@ psql Hospital
 --cambiarse a la base datos
 \c Hospital
 
---creacion de la tablas
 create table Paciente
 (
-	num_paciente integer not NULL GENERATED ALWAYS AS IDENTITY,
+	num_paciente integer not NULL,
 	nombre_p varchar NOT NULL,
 	appat_p varchar NOT NULL,
 	apmat_p varchar NOT NULL,
@@ -20,25 +19,55 @@ create table Paciente
 	CONSTRAINT Paciente_pkey PRIMARY KEY(num_paciente)
 );
 
+create sequence paciente_num_paciente;
+
+ALTER TABLE paciente 
+ALTER COLUMN num_paciente
+SET DEFAULT NEXTVAL('paciente_num_paciente');
+
+UPDATE paciente
+set num_paciente = NEXTVAL ('paciente_num_paciente');
+
+insert into paciente(nombre_p, appat_p, apmat_p, edad_p, direccion) values ('jaun','perez','castro',35,'centro');
+
 CREATE TABLE Expediente
 (
-	num_exp integer not NULL GENERATED ALWAYS AS IDENTITY, 
+	num_exp integer not NULL, 
 	num_paciente integer not null,
 	alergias varchar,
 	constraint Expediente_pkey primary key(num_exp),
 	constraint Expediente_fkey foreign key(num_paciente) references Paciente(num_paciente)
 );
 
+create sequence Expediente_num_expediente;
+
+ALTER TABLE Expediente 
+ALTER COLUMN num_exp
+SET DEFAULT NEXTVAL('Expediente_num_expediente');
+
+UPDATE Expediente
+set num_exp = NEXTVAL ('Expediente_num_expediente');
+
 create table Cita
 (
-	id_cita integer not NULL GENERATED ALWAYS AS IDENTITY,
+	id_cita integer not NULL,
 	num_paciente integer not null,
 	consultorio varchar not null,
 	fecha date not null constraint fecha_invalida check (fecha > now()),
 	hora time not null,
+	estado varchar not null,
 	constraint Cita_pkey primary key(id_cita),
 	constraint Cita_fkey foreign key(num_paciente) references Paciente(num_paciente)
 );
+
+create sequence Cita_id_cita;
+
+ALTER TABLE Cita 
+ALTER COLUMN id_cita
+SET DEFAULT NEXTVAL('Cita_id_cita');
+
+UPDATE cita
+set id_cita = NEXTVAL ('Cita_id_cita');
 
 create table Medico
 (
@@ -53,7 +82,7 @@ create table Medico
 
 create table Especialidad
 (
-	cns integer not NULL GENERATED ALWAYS AS IDENTITY,
+	cns integer not NULL,
 	cedula varchar not null,
 	especialidad varchar not null,
 	constraint Especialidad_pkey primary key(cns, cedula),
@@ -61,9 +90,18 @@ create table Especialidad
 	references Medico(cedula) match simple on update no action on delete cascade
 );
 
+create sequence Especialidad_cns;
+
+ALTER TABLE especialidad 
+ALTER COLUMN cns
+SET DEFAULT NEXTVAL('Especialidad_cns');
+
+UPDATE Especialidad
+set cns = NEXTVAL ('Especialidad_cns');
+
 create table Consulta
 (
-	id_consulta integer not NULL GENERATED ALWAYS AS IDENTITY,
+	id_consulta integer not NULL,
 	id_cita integer not null,
 	cedula varchar not null,
 	fecha_con date not null constraint fecha_invalida check (fecha_con > now()),
@@ -76,9 +114,18 @@ create table Consulta
 	references Medico(cedula) match simple on update no action on delete cascade
 );
 
+create sequence Consulta_id_consulta;
+
+ALTER TABLE Consulta
+ALTER COLUMN id_consulta
+SET DEFAULT NEXTVAL('Consulta_id_consulta');
+
+UPDATE consulta
+set id_consulta = NEXTVAL ('Consulta_id_consulta');
+
 create table Diagnostico
 (
-	num_diagnostico integer not NULL GENERATED ALWAYS AS IDENTITY,
+	num_diagnostico integer not NULL,
 	num_exp integer not null, 
 	cedula varchar not null,
 	medicinas varchar not null,
@@ -89,6 +136,15 @@ create table Diagnostico
 	constraint Diagnostico_fkey_cedula foreign key (cedula)
 	references Medico(cedula) match simple on update no action on delete cascade
 );
+
+create sequence Diagnostico_num_diagnostico;
+
+ALTER TABLE Diagnostico
+ALTER COLUMN num_diagnostico
+SET DEFAULT NEXTVAL('Diagnostico_num_diagnostico');
+
+UPDATE Diagnostico
+set num_diagnostico = NEXTVAL ('Diagnostico_num_diagnostico');
 
 --Crear tabla de la relacion entre paciente y medico
 create table Detalle_Paciente_Medico
