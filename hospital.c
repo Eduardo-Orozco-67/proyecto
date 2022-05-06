@@ -17,6 +17,7 @@ PGconn *bd;
 PGresult *resultado;
 PGresult *ress;
 PGresult *ressu;
+PGresult *resu;
 
 int id;       /*IDENTIFICADOR DEL PROCESO*/
 int numprocs; /*NUMERO DE PROCESOS*/
@@ -981,6 +982,185 @@ void ConsultarCita()
 }
 
 // Funciones para el catalago de CONSULTA -----------------------------------------------------------------------------------------
+
+//Funcion para modificar una consulta
+void ModificarConsulta()
+{
+    int resp, mod, modcita, num_paciente, i, j, columna, fila, idcita;
+    char edit[500], busconsul [300], buspac[300], nombre[20], appat[20], apmat[20], fecha[30], hora[20], consultorio[10], cedula [10], busnumpac[200], buspacit[200], busnum[200];
+    do
+    {
+        // Buscar el cliente por nombre completo
+        printf("\n===============");
+        printf("|MODIFICAR UNA CONSULTA|");
+        printf("===============\n");
+        setbuf(stdin, NULL); // Limpiar el buffer
+        printf("\nIngrese el nombre del paciente: ");
+        scanf("%[^\n]", nombre);
+        setbuf(stdin, NULL); // Limpiar el buffer
+        printf("Ingrese el apellido paterno del paciente: ");
+        scanf("%[^\n]", appat);
+        setbuf(stdin, NULL); // Limpiar el buffer
+        printf("Ingrese el apellido materno del paciente: ");
+        scanf("%[^\n]", apmat);
+        setbuf(stdin, NULL); // Limpiar el buffer
+
+        // Sentencia SQL para saber si el paciente ya ha sido registrado
+        sprintf(buspac, "select num_paciente from paciente where nombre_p = '%s' and appat_p = '%s' and apmat_p = '%s'", nombre, appat, apmat);
+        ressu = PQexec(bd, buspac); // Ejecuta linea postgres
+
+        // Pedir que se ingrese los datos del usuario que se desea editar
+        // Si es uno quiere decir que si lo encontro
+        if (PQntuples(ressu) == 1)
+        {
+
+            printf("\nPaciente encontrado.\n");
+            // Obtener el numero del paciente cita
+            // buscar el numero del paciente obtenido en la consulta anterior
+            num_paciente = strtol(PQgetvalue(ressu, 0, 0), NULL, 10);
+
+            sprintf(buspacit, "select id_cita from cita where num_paciente = %i", num_paciente);
+            ress = PQexec(bd, buspacit); // Ejecuta linea postgres
+            // extraer el id de la cita
+            // idcita = strtol(PQgetvalue(ress, 0, 0), NULL, 10);
+            // Evaluar si se ha encontrado citas para este paciente
+            if (PQntuples(ress) == 0)
+            {
+                printf("\n ATENCION: este paciente NO cuenta con citas agendadas.\n");
+            }
+            else
+            {
+                printf ("\nEl paciente cuenta con citas. Buscando consultas...\n");
+                idcita = strtol(PQgetvalue(ress, 0, 0), NULL, 10);
+                //selecciona todos los datos de la tabla de consulta
+                sprintf(busconsul, "select * from consulta where id_cita = %i", idcita); 
+                resu = PQexec(bd, busconsul); // Ejecuta linea postgres 
+
+                if (PQntuples(resu) == 0)
+                {
+                    printf("\n ATENCION: este paciente NO cuenta con consultas agendadas.\n");
+                }
+                else
+                {  
+                    //entra cuando encuentra consultas del paciente
+                    printf("\nConsultas del paciente encontradas.\n");
+                    // Imprimir todas las consultas del paciente
+                    fila = PQntuples(resu); // filas de la tabla 
+                    if (fila == 0)
+                    {
+                        printf("ATENCION: La tabla está vacía\n");
+                    }
+                    else
+                    {
+                        columna = PQnfields(resu); // Columnas de la tabla
+                        printf("---------------------------------------------------------------------------------------------\n");
+                        printf("|id_consulta | id_cita  |    Cedula    |      Fecha     |      Hora      |    Consultorio   |\n");
+                        for (i = 0; i < fila; i++)
+
+                        {
+                            printf("---------------------------------------------------------------------------------------------\n");
+                            for (j = 0; j < columna; j++)
+                            {
+                                printf("|    %s\t", PQgetvalue(resu, i, j)); // Resultado fila y columna de la consulta
+                            }
+                            printf("\n");
+                        }
+                    }
+
+                    // Preguntar cual es la cita que desea modificar
+                    printf("\nIngrese la consulta que desea modificar: ");
+                    scanf("%i", &modcita);
+
+                    do
+                    {
+                        printf("\nElija el dato que desea editar\n");
+                        printf("\n 1.- Cedula del medico\n 2.- Consultorio\n 3.- Fecha \n 4.- Hora \n 5.- Regresar\n");
+                        printf("Opcion: "); 
+                        scanf("%i", &mod);
+                        setbuf(stdin, NULL); // Limpiar el buffer
+                        switch (mod)
+                        {
+                        case 1:
+                            // Agregar dato modificado el consultorio
+                            printf("\nIngrese la nueva cedula: ");
+                            scanf("%s", cedula);
+                            //buscar si la cedula existe
+                            sprintf(buspacit, "select * from medico where cedula = '%s'", cedula);
+                            ress = PQexec(bd, buspacit); // Ejecuta linea postgres
+                            //entra si el medico no existe
+                            if (PQntuples(ress) == 0)
+                            {
+                                printf ("\n ATENCION: El medico no existe\n");
+                            }
+                            else 
+                            {
+                                printf ("\nEl medico ha sido encontrado. Guardando modificacion...\n");
+                                sprintf(edit, "UPDATE Consulta set cedula = '%s' where id_consulta = %i", cedula, modcita);
+                                printf("\nInstruccion SQL antes de ejecutarse: %s \n", edit); // Mostrar instruccion SQL
+                                printf("\n");
+                                resultado = PQexec(bd, edit); // Ejecuta linea postgres
+                            }
+                            break;
+
+                        case 2:
+                            // Agregar dato modificado el consultorio
+                            printf("\nIngrese el nuevo consultorio: ");
+                            scanf("%s", consultorio);
+                            sprintf(edit, "UPDATE consulta set consultorio_con = '%s' where id_consulta = %i", consultorio, modcita);
+                            printf("\nInstruccion SQL antes de ejecutarse: %s \n", edit); // Mostrar instruccion SQL
+                            printf("\n");
+                            resultado = PQexec(bd, edit); // Ejecuta linea postgres
+                            break;
+
+                        case 3:
+                            // Agregar dato modificado la fecha
+                            printf("\nIngrese la nueva fecha (DD-MM-AAAA): ");
+                            scanf("%s", fecha);
+                            sprintf(edit, "UPDATE consulta set fecha_con = '%s' where id_consulta = %i", fecha, modcita);
+                            printf("\nInstruccion SQL antes de ejecutarse: %s \n", edit); // Mostrar instruccion SQL
+                            printf("\n");
+                            resultado = PQexec(bd, edit); // Ejecuta linea postgres
+                            break;
+
+                        case 4:
+                             // Agregar dato modificado la hora
+                            printf("\nIngrese la nueva hora: ");
+                            scanf("%s", hora);
+                            sprintf(edit, "UPDATE consulta set hora_con = '%s' where id_consulta = %i", hora, modcita);
+                            printf("\nInstruccion SQL antes de ejecutarse: %s \n", edit); // Mostrar instruccion SQL
+                            printf("\n");
+                            resultado = PQexec(bd, edit); // Ejecuta linea postgres                           
+                            break;
+
+                        case 5:
+                            printf("\nRegresando...\n");
+                            break;
+
+                        default:
+                            printf("\nIngrese una opcion correcta\n");
+                        } // Fin del switch
+                    } while (mod != 5);
+                }//fin del if -else para saber si tiene consultas
+            } // fin del if - else para saber si el paciente tiene cita
+
+        } // fin del if para saber si el paciente existe
+        else
+        {
+            printf("\n ATENCION: este paciente NO ha sido ingresado.\n");
+        }
+
+        // Validar si el usuario quiere modificar otro registro
+        do
+        {
+            printf("\n¿Desea modificar otro cliente\n");
+            printf("1.- Si \n2.- No");
+            printf("\nOpcion: ");
+            scanf("%i", &resp);
+            setbuf(stdin, NULL); // Limpiar el buffer
+        } while (resp != 1 && resp != 2);
+    } while (resp == 1);
+}
+
 // Funcion para eliminar una cita
 void EliminarConsulta()
 {
