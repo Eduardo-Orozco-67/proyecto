@@ -1815,11 +1815,11 @@ void MenuSecretaria()
                                     break;
 
                                 case 2:
-                                    // Metodo
+                                    Eliminar_Paciente();
                                     break;
 
                                 case 3:
-                                    // Metodo
+                                    Actualizar_Paciente();
                                     break;
 
                                 case 4:
