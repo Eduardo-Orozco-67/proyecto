@@ -199,11 +199,7 @@ GRANT all ON table Medico to medicos;
 GRANT all ON table Especialidad to medicos;
 GRANT all ON table Diagnostico to medicos;
 --Tablas a las que se le da permiso para seleccionar, eliminar y actualizar
-<<<<<<< HEAD
-GRANT select, insert, update ON table Expediente to group medicos;
-=======
 GRANT select, insert, update ON table Expediente to medicos;
->>>>>>> origin/master
 --Tablas con permisos solo para seleccionar
 GRANT select ON table Paciente to medicos;
 GRANT select ON table Cita to medicos;

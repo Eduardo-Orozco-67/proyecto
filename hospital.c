@@ -65,31 +65,11 @@ void empty_stdin()
 // ░█▄▄█ ░█─░█ ─▀▄▄▀ ░█▄▄▀ 　 ░█─── ░█─░█ ░█▄▄█ ▄█▄ ░█▄▄▄ ░█──▀█ ─░█── ░█▄▄▄
 
 void Alta_Paciente()
-{ 
+{
     int num_paciente, edad_p, respAddP, opcRep, c, d, aFila, aColumna;
     char nombre_p[50], appat_p[50], apmat_p[50], direccion_p[60], addPaciente[700];
     setbuf(stdin, NULL);
 
-<<<<<<< HEAD
-    printf(" || Listado de pacientes ||\n");
-    sprintf(addPaciente, "select * from Paciente");
-    resultado = PQexec(bd, addPaciente);
-    printf("Opcion SQL antes de ejecutarse: %s\n\n", addPaciente);
-    if (resultado != NULL)
-    {                    
-        aFila = PQntuples(resultado);
-        aColumna = PQnfields(resultado);
-        printf(" NUM_PACIENTE  |           NOMBRE COMPELTO         |     EDAD      |   DIRECCION    |\n\n");
-        for (c = 0; c < aFila; c++)
-        {            
-            for ( d = 0; d < aColumna; d++)
-            {
-                printf("%s\t | \t ", PQgetvalue(resultado, c, d));
-            }//fin del for bColumna
-            printf("\n");
-        }//fin del for bFila                            
-    }//fin del if-null
-=======
     printf("Listado de pacientes: \n\n");
 
     sprintf(addPaciente, "select num_paciente, nombre_p from Paciente");
@@ -112,59 +92,39 @@ void Alta_Paciente()
         } // fin del for bFila
         printf(" NUM_PACIENTE  |  NOMBRE \n\n");
     } // fin del if-null
->>>>>>> origin/master
 
     do
     {
-        printf("\nIngresar el nombre del paciente: ");
+        printf("Ingresar el nombre del paciente: \n");
         scanf("%s", nombre_p);
-        printf("Ingresar el apellido paterno del paciente: ");
+        printf("Ingresar el apellido paterno del paciente: \n");
         scanf("%s", appat_p);
-        printf("Ingresar el apellido materno del paciente: ");
+        printf("Ingresar el apellido materno del paciente: \n");
         scanf("%s", apmat_p);
         setbuf(stdin, NULL);
-<<<<<<< HEAD
-        printf ("ban0\n");
-        sprintf (addPaciente, "select num_paciente from paciente where nombre_p = '%s' and appat_p = '%s' and apmat_p = '%s';", nombre_p, appat_p, apmat_p);//busca si ya existe el paciente en nustra bdd
-        resultado = PQexec(bd, addPaciente); //Ejecuta linea postgres
-        printf ("ban1\n");
-        //Si es uno quiere decir que si lo encontro, por lo tanto ya no se piden los demás datos
-        if (PQntuples (resultado) == 1)
-        {
-            printf("ban 2\n");
-=======
         sprintf(addPaciente, "select num_paciente from paciente where nombre_p = '%s' and appat_p = '%s' and apmat_p = '%s'", nombre_p, appat_p, apmat_p); // busca si ya existe el cliente en nustra bdd
         resultado = PQexec(bd, addPaciente);                                                                                                               // Ejecuta linea postgres
         // Si es uno quiere decir que si lo encontro, por lo tanto ya no se piden los demás datos
         if (PQntuples(resultado) == 1)
         {
->>>>>>> origin/master
             printf("\nPaciente encontrado\n");
             printf("\nIngrese otro paciente!\n\n");
         }
         else
         {
-<<<<<<< HEAD
-            printf("ban 2.0n");
-            printf("\nPaciente NO encontrado. Complete los datos\n");
-            printf("Ingresar la edad del paciente: ");
-            scanf("%i", &edad_p);
-            printf("Ingresar la direccion del cliente: ");
-=======
 
             printf("Ingresar la edad del paciente: \n");
             scanf("%i", &edad_p);
             empty_stdin();
             printf("Ingresar la direccion del cliente: \n");
->>>>>>> origin/master
             scanf("%s", direccion_p);
             empty_stdin();
 
-            sprintf(addPaciente, "insert into Paciente ( nombre_p, appat_p, apmat_p, edad_p, direccion) values ( '%s', '%s', '%s', %i, '%s')", nombre_p, appat_p, apmat_p, edad_p, direccion_p);
+            sprintf(addPaciente, "insert into Paciente ( nombre_p, appat_p, apmat_p, edad_p, direccion) values ( '%s', '%s', '%s', '%i', '%s')", nombre_p, appat_p, apmat_p, edad_p, direccion_p);
             printf("Instruccion SQL antes de ejecutarse: %s", addPaciente);
             resultado = PQexec(bd, addPaciente);
 
-            if (PQresultStatus(resultado) == PGRES_COMMAND_OK) 
+            if (PQresultStatus(resultado) == PGRES_COMMAND_OK)
             {
                 printf("\n\nInserccion exitosa!\n\n");
             }
@@ -175,15 +135,6 @@ void Alta_Paciente()
         } // fin de la validacion
         do
         {
-<<<<<<< HEAD
-            printf ("\n¿Desea agregar otro Paciente?\n");
-            printf ("1.- Si \n2.- No");
-            printf ("\nOpcion: ");
-            scanf ("%i", &respAddP);
-            setbuf(stdin, NULL); //Limpiar el buffer
-        }while  (respAddP != 1 && respAddP != 2);
-    } while (respAddP == 1 );
-=======
             printf("\n¿Desea agregar otro Paciente?\n");
             printf("1.- Si \n2.- No");
             printf("\nOpcion: ");
@@ -191,7 +142,6 @@ void Alta_Paciente()
             setbuf(stdin, NULL); // Limpiar el buffer
         } while (respAddP != 1 && respAddP != 2);
     } while (opcRep == 1);
->>>>>>> origin/master
 }
 
 void Actualizar_Paciente()
@@ -2662,21 +2612,12 @@ void MenuSecretaria()
                                     // Metodo
                                     break;
 
-<<<<<<< HEAD
-                                case 2: // Metodo
-                                    Actualizar_Paciente();                           
-                                    break;
-
-                                case 3:// Metodo
-                                    Eliminar_Paciente(); 
-=======
                                 case 2:
                                     Eliminar_Paciente();
                                     break;
 
                                 case 3:
                                     Actualizar_Paciente();
->>>>>>> origin/master
                                     break;
 
                                 case 4:
