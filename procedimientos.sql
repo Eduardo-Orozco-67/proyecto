@@ -50,16 +50,15 @@ CREATE PROCEDURE AgendarCita ( IN vpaciente INTEGER, IN vcon VARCHAR, IN vfecha 
 
 Call AgendarCita (1, '10', '10-05-2022', '17:00:00', NULL);
 
-
 -- PL para que cuando se guarde un diagnostico la cita se ponga como realizada
 
 --Agregar expdiente --
 insert into Expediente values (1, 1, 'Camaron');
 insert into consulta (id_cita, cedula, fecha_con, hora_con, consultorio_con) values(2, 'CJT45', '05-05-2022', '13:00:00', 'las lomas'); 
 
-drop procedure GuardarExpediente;
+drop procedure GuardarDiagnostico;
 
-CREATE PROCEDURE GuardarExpediente (IN vexped INTEGER, IN vcedula VARCHAR, IN vmedicinas VARCHAR, IN vvaloracion VARCHAR, INOUT pRes VARCHAR) AS $$
+CREATE PROCEDURE GuardarDiagnostico (IN vexped INTEGER, IN vcedula VARCHAR, IN vmedicinas VARCHAR, IN vvaloracion VARCHAR, INOUT pRes VARCHAR) AS $$
 	DECLARE  
 		vexped alias for $1;
 		vcedula alias for $2;
@@ -106,4 +105,4 @@ CREATE PROCEDURE GuardarExpediente (IN vexped INTEGER, IN vcedula VARCHAR, IN vm
 	END;
 	$$ LANGUAGE plpgsql;
 
-call GuardarExpediente (1, 'as22', 'amoxicilina','infeccion en la pierna por herida', NULL);
+call GuardarDiagnostico (1, 'as22', 'amoxicilina','infeccion en la pierna por herida', NULL);
