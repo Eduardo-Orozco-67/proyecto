@@ -1840,14 +1840,8 @@ void altaEspecialidad()
         printf("Ingrese el cns de la especialidad: ");
         scanf("%i", &cns);
 
-<<<<<<< HEAD
         sprintf(vali, "select * from Espcialidad where cns = '%i'", cns);
         resultado = PQexec(bd, vali);
-=======
-<<<<<<< HEAD
-//Metodo consultaE
-=======
->>>>>>> cb6641bd6a77c113355dc6fea7b3c26f30837b89
 
         if (PQntuples(resultado) == 0)
         {
@@ -2521,33 +2515,15 @@ void consulta_D()
     }
 }
 
-<<<<<<< HEAD
 void consulta_E()
 {
     char consulta[400], fecha[50];
     int i, j, fila, columna;
 
     setbuf(stdin, NULL);
-=======
->>>>>>> fcdabbfd0eb72e8fb4cec8370a25a1d384adb429
-void consulta_e()
-{
-    char consulta[400], fecha[50];
-    int i,j,fila,columna;
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> fcdabbfd0eb72e8fb4cec8370a25a1d384adb429
-    setbuf(stdin, NULL); 
->>>>>>> cb6641bd6a77c113355dc6fea7b3c26f30837b89
     printf("Ingrese fecha de la cita (DD-MM-AAAA): ");
     scanf("%s", fecha);
     setbuf(stdin, NULL);
-<<<<<<< HEAD
-   
-=======
->>>>>>> fcdabbfd0eb72e8fb4cec8370a25a1d384adb429
 
     sprintf(consulta, "select med.cedula, med.nombre_m,med.appat_m, med.apmat_m, med.edad, count(con.id_consulta) as consultas from consulta con INNER JOIN medico med ON con.cedula = med.cedula where con.fecha_con = '%s' GROUP BY med.cedula;", fecha);
 
@@ -2562,16 +2538,6 @@ void consulta_e()
     else
     {
         columna = PQnfields(resultado); // Columnas de la tabla
-<<<<<<< HEAD
-        printf("----------------------------------------------------------------------------------------\n");
-        printf("|    Cedula     | Nombre medico | Apellido pat  | Apellido mat  |  Edad  | Consultas |\n");
-        for (i = 0; i < fila; i++)
-        {
-            printf("------------------------------------------------------------------------------------\n");
-            for (j = 0; j < columna; j++)
-            {
-
-=======
         printf("--------------------------------------------------------------------------------------\n");
         printf("|    Cedula     | Nombre medico | Apellido pat  | Apellido mat  |  Edad  | Consultas |\n");
         for (i = 0; i < fila; i++)
@@ -2579,7 +2545,6 @@ void consulta_e()
             printf("--------------------------------------------------------------------------------------\n");
             for (j = 0; j < columna; j++)
             {
->>>>>>> fcdabbfd0eb72e8fb4cec8370a25a1d384adb429
                 printf("|    %s\t", PQgetvalue(resultado, i, j)); // Resultado fila y columna de la consulta
             }
             printf("\n");
@@ -2587,13 +2552,6 @@ void consulta_e()
     }
 }
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-
->>>>>>> fcdabbfd0eb72e8fb4cec8370a25a1d384adb429
->>>>>>> cb6641bd6a77c113355dc6fea7b3c26f30837b89
 //░█▀▀▀█ ░█─░█ ░█▀▀█ ░█▀▄▀█ ░█▀▀▀ ░█▄─░█ ░█─░█ ░█▀▀▀█
 //─▀▀▀▄▄ ░█─░█ ░█▀▀▄ ░█░█░█ ░█▀▀▀ ░█░█░█ ░█─░█ ─▀▀▀▄▄
 //░█▄▄▄█ ─▀▄▄▀ ░█▄▄█ ░█──░█ ░█▄▄▄ ░█──▀█ ─▀▄▄▀ ░█▄▄▄█
@@ -3292,18 +3250,8 @@ void MenuMedico()
                             consulta_D();
                             break;
 
-<<<<<<< HEAD
                         case 3: // Metodo E)
                             consulta_E();
-=======
-<<<<<<< HEAD
-                        case 3:
-                            // Metodo E)
-=======
-                        case 3: // Metodo E)                            
->>>>>>> fcdabbfd0eb72e8fb4cec8370a25a1d384adb429
-                            consulta_e();
->>>>>>> cb6641bd6a77c113355dc6fea7b3c26f30837b89
                             break;
 
                         case 4:

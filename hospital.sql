@@ -1,4 +1,3 @@
-
 --creacion de la base
 create database Hospital;
 
@@ -155,7 +154,6 @@ set id_consulta = NEXTVAL ('Consulta_id_consulta');
 
 UPDATE Diagnostico
 set num_diagnostico = NEXTVAL ('Diagnostico_num_diagnostico');
-
 
 --Crear grupos de usuarios
 create role recepcion WITH NOLOGIN;

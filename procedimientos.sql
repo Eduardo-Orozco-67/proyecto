@@ -50,7 +50,6 @@ CREATE PROCEDURE AgendarCita ( IN vpaciente INTEGER, IN vcon VARCHAR, IN vfecha 
 
 Call AgendarCita (1, '10', '10-05-2022', '17:00:00', NULL);
 
-
 -- PL para que cuando se guarde un diagnostico la cita se ponga como realizada
 
 --Agregar expdiente --
