@@ -1640,6 +1640,46 @@ void consultar_medico()
 
 
 
+//Metodo consultaE
+void consulta_e()
+{
+    char consulta[400], fecha[50];
+    int i,j,fila,columna;
+  
+    setbuf(stdin, NULL); 
+    printf("Ingrese fecha de la cita (DD-MM-AAAA): ");
+    scanf("%s", fecha);
+    setbuf(stdin, NULL);
+   
+
+    sprintf(consulta, "select med.cedula, med.nombre_m,med.appat_m, med.apmat_m, med.edad, count(con.id_consulta) as consultas from consulta con INNER JOIN medico med ON con.cedula = med.cedula where con.fecha_con = '%s' GROUP BY med.cedula;", fecha);
+
+    resultado = PQexec(bd, consulta);
+    printf("\n");
+
+    fila = PQntuples(resultado); // filas de la tabla
+    if (fila == 0)
+    {
+        printf("ATENCION: La tabla está vacía\n");
+    }
+    else
+    {
+        columna = PQnfields(resultado); // Columnas de la tabla
+        printf("----------------------------------------------------------------------------------------\n");
+        printf("|    Cedula     | Nombre medico | Apellido pat  | Apellido mat  |  Edad  | Consultas |\n");
+        for (i = 0; i < fila; i++)
+        {
+            printf("------------------------------------------------------------------------------------\n");
+            for (j = 0; j < columna; j++)
+            {
+
+                printf("|    %s\t", PQgetvalue(resultado, i, j)); // Resultado fila y columna de la consulta
+            }
+            printf("\n");
+        }
+    }
+}
+
 //░█▀▀▀█ ░█─░█ ░█▀▀█ ░█▀▄▀█ ░█▀▀▀ ░█▄─░█ ░█─░█ ░█▀▀▀█
 //─▀▀▀▄▄ ░█─░█ ░█▀▀▄ ░█░█░█ ░█▀▀▀ ░█░█░█ ░█─░█ ─▀▀▀▄▄
 //░█▄▄▄█ ─▀▄▄▀ ░█▄▄█ ░█──░█ ░█▄▄▄ ░█──▀█ ─▀▄▄▀ ░█▄▄▄█
@@ -2337,6 +2377,7 @@ void MenuMedico()
 
                         case 3:
                             // Metodo E)
+                            consulta_e();
                             break;
 
                         case 4:
