@@ -53,7 +53,7 @@ double tmp3fmr;
 // ░█▄▄█ ░█─░█ ─▀▄▄▀ ░█▄▄▀ 　 ░█─── ░█─░█ ░█▄▄█ ▄█▄ ░█▄▄▄ ░█──▀█ ─░█── ░█▄▄▄
 
 void Alta_Paciente()
-{
+{ 
     int num_paciente, edad_p, respAddP, opcRep, c, d, aFila, aColumna;
     char nombre_p[50], appat_p[50], apmat_p[50], direccion_p[60], addPaciente[700];
     setbuf(stdin, NULL);
