@@ -50,7 +50,7 @@ double tmp2fmp;
 double tmp3mr = 0.0;
 double tmp3fmr;
 
-//metodo para limpiar el buffer
+// metodo para limpiar el buffer
 void empty_stdin()
 {
     int s;
@@ -282,8 +282,8 @@ void Actualizar_Paciente()
                 setbuf(stdin, NULL); // Limpiar el buffer
                 printf("Ingresar  la direccion anteriormente guardado:\n");
                 empty_stdin();
-                scanf("%s", direccion); 
-                empty_stdin();    
+                scanf("%s", direccion);
+                empty_stdin();
                 printf("Ingresar  la direccion nueva a guardar\n");
                 scanf("%s", direccionNew);
                 sprintf(actPaciente, "update Paciente set direccion = '%s' where direccion = '%s';", direccionNew, direccion);
@@ -699,15 +699,15 @@ void borrar_expediente()
     {
         sprintf(delete, "delete from expediente where num_paciente = %d;", numpb);
         printf("\nInstruccion SQL antes de ejecutarse: %s\n", delete);
-            resu = PQexec(bd, delete);
-            if (PQresultStatus(resu) == PGRES_COMMAND_OK)
-            {
-                printf("\n\nEliminacion exitosa!\n\n");
-            }
-            else
-            {
-                printf("\n\nEliminacion sin exito! \n\n");
-            }
+        resu = PQexec(bd, delete);
+        if (PQresultStatus(resu) == PGRES_COMMAND_OK)
+        {
+            printf("\n\nEliminacion exitosa!\n\n");
+        }
+        else
+        {
+            printf("\n\nEliminacion sin exito! \n\n");
+        }
     }
     else
     {
@@ -732,17 +732,17 @@ void modificar_expediente()
         empty_stdin();
         scanf("%s", ndatos);
         empty_stdin();
-        sprintf(update, "update Expediente set alergias = '%s' where num_paciente = '%d';",ndatos, numpb);
+        sprintf(update, "update Expediente set alergias = '%s' where num_paciente = '%d';", ndatos, numpb);
         printf("\nInstruccion SQL antes de ejecutarse: %s\n", update);
-            resu = PQexec(bd, update);
-            if (PQresultStatus(resu) == PGRES_COMMAND_OK)
-            {
-                printf("\n\nActualizacion exitosa!\n\n");
-            }
-            else
-            {
-                printf("\n\nEActualizacion sin exito! \n\n");
-            }
+        resu = PQexec(bd, update);
+        if (PQresultStatus(resu) == PGRES_COMMAND_OK)
+        {
+            printf("\n\nActualizacion exitosa!\n\n");
+        }
+        else
+        {
+            printf("\n\nEActualizacion sin exito! \n\n");
+        }
     }
     else
     {
@@ -2412,88 +2412,86 @@ void Consulta_A()
 void Consulta_B()
 {
     char consulta_edad[400];
-    int a,b,fila,columna;
+    int a, b, fila, columna;
 
     setbuf(stdin, NULL);
-    sprintf(consulta_edad,"select nombre_p, appat_p, apmat_p, edad_p from paciente where edad_p in (select max(edad_p) from paciente);");
+    sprintf(consulta_edad, "select nombre_p, appat_p, apmat_p, edad_p from paciente where edad_p in (select max(edad_p) from paciente);");
     resultado = PQexec(bd, consulta_edad);
     printf("\n");
     printf("\nPaciente con mayor edad:\n");
     if (resultado != NULL)
-    {                
+    {
         fila = PQntuples(resultado);
         columna = PQnfields(resultado);
         for (a = 0; a < fila; a++)
         {
-            for ( b = 0; b < columna; b++)
-                {
-                    printf("%s\t | \t ", PQgetvalue(resultado, a, b));
-                }//fin del for bColumna
-                printf("\n\n");
-        }//fin del for bFila
-    }//fin del if-null
+            for (b = 0; b < columna; b++)
+            {
+                printf("%s\t | \t ", PQgetvalue(resultado, a, b));
+            } // fin del for bColumna
+            printf("\n\n");
+        } // fin del for bFila
+    }     // fin del if-null
 
     setbuf(stdin, NULL);
-    sprintf(consulta_edad,"select nombre_m, appat_m, apmat_m, edad from medico where edad in (select max(edad) from medico);");
+    sprintf(consulta_edad, "select nombre_m, appat_m, apmat_m, edad from medico where edad in (select max(edad) from medico);");
     resultado = PQexec(bd, consulta_edad);
     printf("\n");
     printf("\nMedico con mayor edad:\n");
     if (resultado != NULL)
-    {                
+    {
         fila = PQntuples(resultado);
         columna = PQnfields(resultado);
         for (a = 0; a < fila; a++)
         {
-            for ( b = 0; b < columna; b++)
-                {
-                    printf("%s\t | \t ", PQgetvalue(resultado, a, b));
-                }//fin del for bColumna
-                printf("\n\n");
-        }//fin del for bFila
-    }//fin del if-null
-    
+            for (b = 0; b < columna; b++)
+            {
+                printf("%s\t | \t ", PQgetvalue(resultado, a, b));
+            } // fin del for bColumna
+            printf("\n\n");
+        } // fin del for bFila
+    }     // fin del if-null
 }
 
 void consulta_C()
 {
     char consulta_promedio_edad[400];
-    int a,b,fila,columna;
+    int a, b, fila, columna;
 
     setbuf(stdin, NULL);
-    sprintf(consulta_promedio_edad,"select avg(p.edad_p) as promedio_de_edades_de_los_pacientes, avg(m.edad) as promedio_de_edades_de_medico from paciente p, medico m;");
+    sprintf(consulta_promedio_edad, "select avg(p.edad_p) as promedio_de_edades_de_los_pacientes, avg(m.edad) as promedio_de_edades_de_medico from paciente p, medico m;");
     ressu = PQexec(bd, consulta_promedio_edad);
     printf("\n");
     printf("\npromedio_de_edades_de_los_pacientes  |     promedio_de_edades_de_los_medico  |\n\n");
     if (ressu != NULL)
-    {                
+    {
         fila = PQntuples(ressu);
         columna = PQnfields(ressu);
         for (a = 0; a < fila; a++)
         {
-            for ( b = 0; b < columna; b++)
-                {
-                    printf("\t%s\t     | \t ", PQgetvalue(ressu, a, b));
-                }//fin del for bColumna
-                printf("\n\n");
-        }//fin del for bFila
-    }//fin del if-null
-
+            for (b = 0; b < columna; b++)
+            {
+                printf("\t%s\t     | \t ", PQgetvalue(ressu, a, b));
+            } // fin del for bColumna
+            printf("\n\n");
+        } // fin del for bFila
+    }     // fin del if-null
 }
 
 void consulta_D()
 {
-    char consulta[4000], fecha1[15], fecha2[15]; 
-    int i,j,fila,columna;
-    setbuf(stdin, NULL); 
+    char consulta[4000], fecha1[15], fecha2[15];
+    int i, j, fila, columna;
+    setbuf(stdin, NULL);
     printf("Ingrese la primera fecha como inicio del rango(DD-MM-AAAA): ");
-    scanf("%s",fecha1);
-    setbuf(stdin, NULL); 
+    scanf("%s", fecha1);
+    setbuf(stdin, NULL);
     printf("Ingrese la segunda fecha como fin del rango(DD-MM-AAAA): ");
-    scanf("%s",fecha2);
+    scanf("%s", fecha2);
     printf("\n");
-    setbuf(stdin, NULL); 
-    sprintf(consulta,"select  pa.nombre_p,  pa.appat_p, pa.apmat_p, con.fecha_con, count(con.fecha_con) as numero_de_consultas from paciente pa  inner join cita ci  on pa.num_paciente= ci.num_paciente inner join consulta con  on ci.id_cita=con.id_cita where con.fecha_con between '%s' and '%s' group by con.fecha_con,pa.nombre_p, pa.appat_p, pa.apmat_p order by con.fecha_con,pa.nombre_p,pa.appat_p, pa.apmat_p;",fecha1, fecha2);
-    resultado = PQexec(bd, consulta); 
+    setbuf(stdin, NULL);
+    sprintf(consulta, "select  pa.nombre_p,  pa.appat_p, pa.apmat_p, con.fecha_con, count(con.fecha_con) as numero_de_consultas from paciente pa  inner join cita ci  on pa.num_paciente= ci.num_paciente inner join consulta con  on ci.id_cita=con.id_cita where con.fecha_con between '%s' and '%s' group by con.fecha_con,pa.nombre_p, pa.appat_p, pa.apmat_p order by con.fecha_con,pa.nombre_p,pa.appat_p, pa.apmat_p;", fecha1, fecha2);
+    resultado = PQexec(bd, consulta);
     printf("\nInstruccion a ejecutarse :%s\n", consulta);
     fila = PQntuples(resultado); // filas de la tabla
     if (fila == 0)
@@ -2514,9 +2512,7 @@ void consulta_D()
             }
             printf("\n");
         }
-        
     }
-
 }
 
 void consulta_E()
