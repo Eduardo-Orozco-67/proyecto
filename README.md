@@ -9,6 +9,7 @@ Medico: num_cedula, nombre, edad, especialidad,
 El medico podrá atender al mismo paciente varias veces en fechas distintas, pero no el mismo día.
 
 Deberá proporcionar los siguientes reportes:
+
     a) Lista de Pacientes de cada medico
     
     b) El paciente y el medico mas grande de edad
