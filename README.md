@@ -10,12 +10,17 @@ El medico podrá atender al mismo paciente varias veces en fechas distintas, per
 
 Deberá proporcionar los siguientes reportes:
     a) Lista de Pacientes de cada medico
+    
     b) El paciente y el medico mas grande de edad
+    
     c) El promedio de las edades de los pacientes y los médicos.
+    
     d) Consultas de los paciente por rango de fecha
+    
     e) Numero de consultas realizadas en el dia por el medico
-    f) Para cada uno (medico, paciente) altas, bajas, consultas, modificaciones
-    g) Entre otras….
+    
+    f) Para cada uno (medico, paciente) altas, bajas, consultas, modificaciones, entre otras...
+    
     h) Al menos un procedimiento almacenado
 
 
