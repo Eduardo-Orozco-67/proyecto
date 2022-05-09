@@ -202,8 +202,8 @@ GRANT all ON table Diagnostico to medicos;
 GRANT select, insert, update ON table Expediente to medicos;
 --Tablas con permisos solo para seleccionar
 GRANT select ON table Paciente to medicos;
-GRANT select ON table Cita to medicos;
-GRANT select ON table Consulta to medicos; 
+GRANT select, update ON table Cita to medicos;
+GRANT all ON table Consulta to medicos; 
 
 --Otorgando permisos de las tablas para el grupo del administrador
 GRANT all ON table Paciente to administrador;

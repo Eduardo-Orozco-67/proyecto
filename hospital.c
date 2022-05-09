@@ -96,12 +96,14 @@ void Alta_Paciente()
     do
     {
         printf("Ingresar el nombre del paciente: \n");
-        scanf("%s", nombre_p);
+        scanf("%[^\n]", nombre_p);
+        empty_stdin();
         printf("Ingresar el apellido paterno del paciente: \n");
-        scanf("%s", appat_p);
+        scanf("%[^\n]", appat_p);
+        empty_stdin();
         printf("Ingresar el apellido materno del paciente: \n");
-        scanf("%s", apmat_p);
-        setbuf(stdin, NULL);
+        scanf("%[^\n]", apmat_p);
+        empty_stdin();
         sprintf(addPaciente, "select num_paciente from paciente where nombre_p = '%s' and appat_p = '%s' and apmat_p = '%s'", nombre_p, appat_p, apmat_p); // busca si ya existe el cliente en nustra bdd
         resultado = PQexec(bd, addPaciente);                                                                                                               // Ejecuta linea postgres
         // Si es uno quiere decir que si lo encontro, por lo tanto ya no se piden los demás datos
@@ -117,7 +119,8 @@ void Alta_Paciente()
             scanf("%i", &edad_p);
             empty_stdin();
             printf("Ingresar la direccion del cliente: \n");
-            scanf("%s", direccion_p);
+            scanf("%[^\n]", direccion_p);
+            empty_stdin();
             empty_stdin();
 
             sprintf(addPaciente, "insert into Paciente ( nombre_p, appat_p, apmat_p, edad_p, direccion) values ( '%s', '%s', '%s', '%i', '%s')", nombre_p, appat_p, apmat_p, edad_p, direccion_p);
@@ -209,9 +212,11 @@ void Actualizar_Paciente()
             case 1:                  // nombre
                 setbuf(stdin, NULL); // Limpiar el buffer
                 printf("Ingresar  el nombre anteriormente guardado:\n");
-                scanf("%s", nombre_paciente);
+                scanf("%[^\n]", nombre_paciente);
+                empty_stdin();
                 printf("Ingresar  el nombre nuevo a guardar\n");
-                scanf("%s", nombre_pacienteNew);
+                scanf("%[^\n]", nombre_pacienteNew);
+                empty_stdin();
                 sprintf(actPaciente, "update Paciente set nombre_p = '%s' where nombre_p = '%s';", nombre_pacienteNew, nombre_paciente);
                 resultado = PQexec(bd, actPaciente);
                 if (PQresultStatus(resultado) == PGRES_COMMAND_OK)
@@ -227,9 +232,11 @@ void Actualizar_Paciente()
             case 2:                  // appat_p
                 setbuf(stdin, NULL); // Limpiar el buffer
                 printf("Ingresar  el apellido paterno anteriormente guardado:\n");
-                scanf("%s", appat_p);
+                scanf("%[^\n]", appat_p);
+                empty_stdin();
                 printf("Ingresar  el apellido paterno nuevo a guardar\n");
-                scanf("%s", appat_pNew);
+                scanf("%[^\n]", appat_pNew);
+                empty_stdin();
                 sprintf(actPaciente, "update Paciente set appat_p = '%s' where appat_p = '%s';", appat_pNew, appat_p);
                 resultado = PQexec(bd, actPaciente);
                 if (PQresultStatus(resultado) == PGRES_COMMAND_OK)
@@ -245,9 +252,11 @@ void Actualizar_Paciente()
             case 3:                  // apmat_p
                 setbuf(stdin, NULL); // Limpiar el buffer
                 printf("Ingresar  el apellido materno anteriormente guardado:\n");
-                scanf("%s", apmat_p);
+                scanf("%[^\n]", apmat_p);
+                empty_stdin();
                 printf("Ingresar  el apellido materno nuevo a guardar\n");
-                scanf("%s", apmat_pNew);
+                scanf("%[^\n]", apmat_pNew);
+                empty_stdin();
                 sprintf(actPaciente, "update Paciente set apmat_p = '%s' where apmat_p = '%s';", apmat_pNew, apmat_p);
                 resultado = PQexec(bd, actPaciente);
                 if (PQresultStatus(resultado) == PGRES_COMMAND_OK)
@@ -281,11 +290,11 @@ void Actualizar_Paciente()
             case 5:                  // direccion
                 setbuf(stdin, NULL); // Limpiar el buffer
                 printf("Ingresar  la direccion anteriormente guardado:\n");
-                empty_stdin();
-                scanf("%s", direccion);
+                scanf("%[^\n]", direccion);
                 empty_stdin();
                 printf("Ingresar  la direccion nueva a guardar\n");
-                scanf("%s", direccionNew);
+                scanf("%[^\n]", direccionNew);
+                empty_stdin();
                 sprintf(actPaciente, "update Paciente set direccion = '%s' where direccion = '%s';", direccionNew, direccion);
                 resultado = PQexec(bd, actPaciente);
                 if (PQresultStatus(resultado) == PGRES_COMMAND_OK)
@@ -660,7 +669,7 @@ void alta_expediente()
         {
             printf("\ninserte alergias: padecimientos, sindromes etc: ");
             empty_stdin();
-            scanf("%s", datos);
+            scanf("%[^\n]", datos);
             empty_stdin();
             sprintf(inser, "insert into Expediente(num_paciente, alergias) values ('%d' , '%s');", nump, datos);
             printf("\nInstruccion SQL antes de ejecutarse: %s\n", inser);
@@ -730,7 +739,7 @@ void modificar_expediente()
     {
         printf("\ninserte nuevas alergias: padecimientos, sindromes etc: ");
         empty_stdin();
-        scanf("%s", ndatos);
+        scanf("%[^\n]", ndatos);
         empty_stdin();
         sprintf(update, "update Expediente set alergias = '%s' where num_paciente = '%d';", ndatos, numpb);
         printf("\nInstruccion SQL antes de ejecutarse: %s\n", update);
@@ -753,35 +762,84 @@ void modificar_expediente()
 void mostrar_expediente()
 {
     char tab[50], cad[100];
-    int i, j, fila, columna;
+    int i, j, fila, columna, opc, num_exp;
 
-    // Para las sentencias se usa sprintf y en automatico se declara la variable dentro del parentesis para almacenarla
-    sprintf(cad, "select * from Expediente order by num_exp");
-    printf("Instruccion SQL antes de ejecutarse: %s \n", cad); // Mostrar instruccion SQL
-    printf("\n");
-    resultado = PQexec(bd, cad); // Ejecuta linea postgres
-
-    fila = PQntuples(resultado); // filas de la tabla
-    if (fila == 0)
+    do
     {
-        printf("ATENCION: La tabla está vacía\n");
-    }
-    else
-    {
-        columna = PQnfields(resultado); // Columnas de la tabla
-        printf("---------------------------------------------------------------------------\n");
-        printf("| Num_exp | Num_paciente  |    Alergias     |\n");
-        for (i = 0; i < fila; i++)
+        printf("\n\nEXPEDIENTES\n\n");
+        printf("1.- ver todos los expedientes \n2.- ver 1 expediente(buscar x numero de expediente) \n3.- Salir");
+        printf("\nElija una opcion:  ");
+        scanf("%d", &opc);
+        printf("\n");
+        switch (opc)
         {
-            printf("---------------------------------------------------------------------------\n");
-            for (j = 0; j < columna; j++)
-            {
-
-                printf("|    %s\t", PQgetvalue(resultado, i, j)); // Resultado fila y columna de la consulta
-            }
+        case 1:
+            /* code */
+            // Para las sentencias se usa sprintf y en automatico se declara la variable dentro del parentesis para almacenarla
+            sprintf(cad, "select * from Expediente order by num_exp");
+            printf("Instruccion SQL antes de ejecutarse: %s \n", cad); // Mostrar instruccion SQL
             printf("\n");
+            resultado = PQexec(bd, cad); // Ejecuta linea postgres
+
+            fila = PQntuples(resultado); // filas de la tabla
+            if (fila == 0)
+            {
+                printf("ATENCION: La tabla está vacía\n");
+            }
+            else
+            {
+                columna = PQnfields(resultado); // Columnas de la tabla
+                printf("---------------------------------------------------------------------------\n");
+                printf("| Num_exp | Num_paciente  |    Alergias     |\n");
+                for (i = 0; i < fila; i++)
+                {
+                    printf("---------------------------------------------------------------------------\n");
+                    for (j = 0; j < columna; j++)
+                    {
+
+                        printf("|    %s\t", PQgetvalue(resultado, i, j)); // Resultado fila y columna de la consulta
+                    }
+                    printf("\n");
+                }
+            }
+            break;
+        case 2:
+
+            printf("Ingrese el numero de expediente a buscar: ");
+            scanf("%d", &num_exp);
+            // Para las sentencias se usa sprintf y en automatico se declara la variable dentro del parentesis para almacenarla
+            sprintf(cad, "select * from Expediente where num_exp=%d",num_exp);
+            printf("Instruccion SQL antes de ejecutarse: %s \n", cad); // Mostrar instruccion SQL
+            printf("\n");
+            resultado = PQexec(bd, cad); // Ejecuta linea postgres
+
+            fila = PQntuples(resultado); // filas de la tabla
+            if (fila == 0)
+            {
+                printf("ATENCION: No existe ese expediente\n");
+            }
+            else
+            {
+                columna = PQnfields(resultado); // Columnas de la tabla
+                printf("---------------------------------------------------------------------------\n");
+                printf("| Num_exp | Num_paciente  |    Alergias     |\n");
+                for (i = 0; i < fila; i++)
+                {
+                    printf("---------------------------------------------------------------------------\n");
+                    for (j = 0; j < columna; j++)
+                    {
+
+                        printf("|    %s\t", PQgetvalue(resultado, i, j)); // Resultado fila y columna de la consulta
+                    }
+                    printf("\n");
+                }
+            }
+            break;
+
+        default:
+            break;
         }
-    }
+    } while (opc != 3);
 }
 
 // ░█▀▀█ ░█▀▀█ ░█─░█ ░█▀▀▄ 　 ░█▀▀█ ▀█▀ ▀▀█▀▀ ─█▀▀█ 　 █──█ 　 ░█▀▀█ ░█▀▀▀█ ░█▄─░█ ░█▀▀▀█ ░█─░█ ░█─── ▀▀█▀▀ ─█▀▀█
@@ -1028,12 +1086,12 @@ void EliminarCita()
         printf("|ELIMINAR UNA CITA|");
         printf("===============\n");
         printf("\nIngrese el nombre del paciente: ");
-        scanf("%s", nombre);
+        scanf("%[^\n]", nombre);
         setbuf(stdin, NULL); // Limpiar el buffer
         printf("Ingrese el apellido paterno del paciente: ");
-        scanf("%s", appat);
+        scanf("%[^\n]", appat);
         printf("Ingrese el apellido materno del paciente: ");
-        scanf("%s", apmat);
+        scanf("%[^\n]", apmat);
         setbuf(stdin, NULL); // Limpiar el buffer
         // Sentencia SQL para saber si el paciente ya ha sido registrado
         sprintf(buspac, "select num_paciente from paciente where nombre_p = '%s' and appat_p = '%s' and apmat_p = '%s';", nombre, appat, apmat);
@@ -1133,7 +1191,7 @@ void Guardar_Consulta()
             id_cita = strtol(PQgetvalue(resultado, 0, 0), NULL, 10); // se obtiene por defecto el ide de la cita
             printf("\n\n.....Agendar consulta.....\n\n");
             printf("Ingrese la cedula del medico que va a atender:");
-            scanf("%s", cedula);
+            scanf("%[^\n]", cedula);
             sprintf(buscar, "Select cedula from medico where cedula='%s'", cedula);
             ress = PQexec(bd, buscar); // Ejecuta linea postgres
             printf("\n");
@@ -1276,7 +1334,7 @@ void ModificarConsulta()
                         case 1:
                             // Agregar dato modificado el consultorio
                             printf("\nIngrese la nueva cedula: ");
-                            scanf("%s", cedula);
+                            scanf("%[^\n]", cedula);
                             // buscar si la cedula existe
                             sprintf(buspacit, "select * from medico where cedula = '%s'", cedula);
                             ress = PQexec(bd, buspacit); // Ejecuta linea postgres
@@ -1298,7 +1356,7 @@ void ModificarConsulta()
                         case 2:
                             // Agregar dato modificado el consultorio
                             printf("\nIngrese el nuevo consultorio: ");
-                            scanf("%s", consultorio);
+                            scanf("%[^\n]", consultorio);
                             sprintf(edit, "UPDATE consulta set consultorio_con = '%s' where id_consulta = %i", consultorio, modcita);
                             printf("\nInstruccion SQL antes de ejecutarse: %s \n", edit); // Mostrar instruccion SQL
                             printf("\n");
@@ -1480,7 +1538,7 @@ void ConsultarConsulta()
 
 void alta_medico()
 {
-    char cedula[30], nombre[30], appat[30], apmat[30];
+    char cedula[30], nombre[50], appat[30], apmat[30];
     int edad, resp;
     char altaM[500], vali[200];
 
@@ -1503,7 +1561,7 @@ void alta_medico()
             {
                 setbuf(stdin, NULL);
                 printf("Ingrese el nombre del medico:");
-                fgets(nombre, 30, stdin);
+                fgets(nombre, 50, stdin);
                 setbuf(stdin, NULL);
                 // Remover salto de línea
                 if ((strlen(nombre) > 0) && (nombre[strlen(nombre) - 1] == '\n'))
@@ -1619,7 +1677,7 @@ void baja_medico()
 void actualizar_medico()
 {
     char actualizar[300], validar[200];
-    char cedula[20], nombre[30], appat[30], apmat[30];
+    char cedula[20], nombre[50], appat[30], apmat[30];
     int edad, opc, opcMod;
 
     do
@@ -1651,7 +1709,7 @@ void actualizar_medico()
                 case 1:
                     setbuf(stdin, NULL);
                     printf("Introduzca el nuevo nombre del cliente:");
-                    fgets(nombre, 30, stdin);
+                    fgets(nombre, 50, stdin);
                     setbuf(stdin, NULL);
 
                     // Remover salto de línea
@@ -1837,9 +1895,6 @@ void altaEspecialidad()
     do
     {
         printf("\n Ingresar una nueva especialidad a la BDD \n");
-        printf("Ingrese el cns de la especialidad: ");
-        scanf("%i", &cns);
-
         sprintf(vali, "select * from Espcialidad where cns = '%i'", cns);
         resultado = PQexec(bd, vali);
 
@@ -1861,17 +1916,9 @@ void altaEspecialidad()
             {
                 setbuf(stdin, NULL);
                 printf("Ingrese la especialidad:");
-                scanf("%s", especialidad);
-                fgets(especialidad, 30, stdin);
+                scanf("%[^\n]", especialidad);
 
-                setbuf(stdin, NULL);
-                // Remover salto de línea
-                if ((strlen(especialidad) > 0) && (especialidad[strlen(especialidad) - 1] == '\n'))
-                {
-                    especialidad[strlen(especialidad) - 1] = '\0';
-                }
-
-                sprintf(altaE, "insert into Especialidad (cns, cedula, especialidad) values('%i', '%s', '%s')", cns, cedula, especialidad);
+                sprintf(altaE, "insert into Especialidad (cedula, especialidad) values('%s', '%s')", cedula, especialidad);
                 printf("Instruccion SQL antes de ejecutarse: %s \n", altaE); // Mostrar sentencia SQL
                 printf("\n");
                 resultado = PQexec(bd, altaE);
@@ -1978,14 +2025,7 @@ void modificarEspecialidad()
         {
             setbuf(stdin, NULL);
             printf("Ingrese la nueva especialidad:");
-            scanf("%s", especialidad);
-            fgets(especialidad, 30, stdin);
-
-            // Remover salto de línea
-            if ((strlen(especialidad) > 0) && (especialidad[strlen(especialidad) - 1] == '\n'))
-            {
-                especialidad[strlen(especialidad) - 1] = '\0';
-            }
+            scanf("%[^\n]", especialidad);
 
             sprintf(actualizar, "Update Especialidad set especialidad = '%s' where cns = '%i' ", especialidad, cns);
             printf("Instruccion SQL antes de ejecutarse: %s \n", actualizar); // Mostrar instruccion SQL
@@ -2089,11 +2129,11 @@ void Alta_Diagnostico()
                 setbuf(stdin, NULL);
                 printf("\n");
                 // llamamos al procedimiento almadenado llamado guardardiagnostico para realizar la alta del diagnostico
-                sprintf(alta_D, "Call GuardarDiagnostico(%i, '%s', '%s', '%s', NULL); ", num_exp, cedula, medicinas, valoracion_m);
+                sprintf(alta_D, "Call GuardarDiagnostico(%i, '%s', '%s', '%s', NULL);", num_exp, cedula, medicinas, valoracion_m);
                 resultado = PQexec(bd, alta_D); // se manda la insercion a la bd hospital
                 printf("Instruccion SQL antes de ejecutarse: %s \n", alta_D);
 
-                if (PQresultStatus(resultado) == PGRES_COMMAND_OK) // verifica si se realizo el comando
+                if (PQresultStatus(resultado) != PGRES_COMMAND_OK) // verifica si se realizo el comando
                 {
                     printf("\nInserrcion exitosa!\n");
                 }
@@ -2187,7 +2227,7 @@ void Actualizar_Diagnostico()
             case 2:
                 setbuf(stdin, NULL);
                 printf("Ingrese la nueva cedula del medico:");
-                scanf("%s", cedula);
+                scanf("%[^\n]", cedula);
                 sprintf(act, "update diagnostico set cedula='%s' where num_diagnostico='%i';", cedula, num_dia);
                 resultado = PQexec(bd, act);
                 if (PQresultStatus(resultado) == PGRES_COMMAND_OK)
@@ -3287,7 +3327,7 @@ void MenuMedico()
 
 int menu_principal()
 {
-    int opcUsuario;
+    int opcUsuario, opcdetalle;
     char host[15] = "localhost";
     char puerto[5] = "5432";
     char database[15] = "hospital";
@@ -3313,8 +3353,8 @@ int menu_principal()
             printf("\t\t  █▀▄▀█ █▀▀ █▄░█ █░█   █▀█ █▀█ █ █▄░█ █▀▀ █ █▀█ ▄▀█ █░░\n");
             printf("\t\t  █░▀░█ ██▄ █░▀█ █▄█   █▀▀ █▀▄ █ █░▀█ █▄▄ █ █▀▀ █▀█ █▄▄\n");
 
-            printf("\n 1.- Secretaria \n 2.- Medico \n 3.- Salir \n ");
-            printf("Elija su opcion: ");
+            printf("\n 1.- Secretaria \n 2.- Medico \n 3.- Detalles\n 4.- Salir \n ");
+            printf("\nElija su opcion: ");
             scanf("%opcUsuario", &opcUsuario);
 
             switch (opcUsuario)
@@ -3380,6 +3420,22 @@ int menu_principal()
                 break;
 
             case 3:
+                do
+                {
+
+                    printf("\nI N T E G R A N T E S");
+                    printf("\n\n🇸​​​​​ 🇦​​​​​ 🇲​​​​​ 🇺​​​​​ 🇪​​​​​ 🇱​​​​​   🇸​​​​​ 🇦​​​​​ 🇳​​​​​ 🇨​​​​​ 🇭​​​​​ 🇪​​​​​ 🇿   🇬​​​​​ 🇺​​​​​ 🇿 🇲​​​​​ 🇦​​​​​ 🇳​​​​​\n");
+                    printf("\n🇪​​​​​ 🇲​​​​​ 🇮​​​​​ 🇱​​​​​ 🇮​​​​​ 🇦​​​​​   🇿 🇺​​​​​ 🇳​​​​​ 🇮​​​​​ 🇬​​​​​ 🇦​​​​​   🇱​​​​​ 🇴​​​​​ 🇸​​​​​ 🇦​​​​​ 🇩​​​​​ 🇦​​​​​\n");
+                    printf("\n🇯​​​​​ 🇴​​​​​ 🇸​​​​​ 🇪​​​​​   🇪​​​​​ 🇩​​​​​ 🇺​​​​​ 🇦​​​​​ 🇷​​​​​ 🇩​​​​​ 🇴​​​​​   🇴​​​​​ 🇷​​​​​ 🇴​​​​​ 🇿 🇨​​​​​ 🇴​​​​​  🇨​​​​​ 🇦​​​​​ 🇷​​​​​ 🇩​​​​​ 🇪​​​​​ 🇳​​​​​ 🇦​​​​​ 🇸​​​​​\n");
+                    printf("\n🇯​​​​​ 🇪​​​​​ 🇦​​​​​ 🇳​​​​​ 🇳​​​​​ 🇪​​​​​ 🇹​​​​​ 🇹​​​​​ 🇪​​​​​   🇸​​​​​ 🇦​​​​​ 🇳​​​​​ 🇨​​​​​ 🇭​​​​​ 🇪​​​​​ 🇿   🇭​​​​​ 🇪​​​​​ 🇷​​​​​ 🇳​​​​​ 🇦​​​​​ 🇳​​​​​ 🇩​​​​​ 🇪​​​​​ 🇿\n");
+                    printf("\n🇳​​​​​ 🇴​​​​​ 🇪​​​​​   🇬​​​​​ 🇺​​​​​ 🇮​​​​​ 🇱​​​​​ 🇱​​​​​ 🇪​​​​​ 🇳​​​​​   🇬​​​​​ 🇪​​​​​ 🇷​​​​​ 🇦​​​​​ 🇷​​​​​ 🇩​​​​​🇴​​​​​\n");
+                    printf("\npresione 1 para regresar: ");
+                    scanf("%d", &opcdetalle);
+
+                } while (opcdetalle != 1);
+                break;
+
+            case 4:
                 printf("\n\n\n \t---𝗦 𝗮 𝗹 𝗶 𝗲 𝗻 𝗱 𝗼  𝗱 𝗲 𝗹  𝗽 𝗿 𝗼 𝗴 𝗿 𝗮 𝗺 𝗮  𝗽 𝗿 𝗶 𝗻 𝗰 𝗶 𝗽 𝗮 𝗹---\n");
                 break;
 
@@ -3388,7 +3444,7 @@ int menu_principal()
 
             } // Fin del switch principal
 
-        } while (opcUsuario != 3);
+        } while (opcUsuario != 4);
     }
 }
 // main
