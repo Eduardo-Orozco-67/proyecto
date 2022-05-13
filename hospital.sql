@@ -1,4 +1,3 @@
-
 --creacion de la base
 create database Hospital;
 
@@ -8,10 +7,9 @@ psql Hospital
 --cambiarse a la base datos
 \c Hospital
 
---creacion de la tablas
 create table Paciente
 (
-	num_paciente integer not NULL GENERATED ALWAYS AS IDENTITY,
+	num_paciente integer not NULL,
 	nombre_p varchar NOT NULL,
 	appat_p varchar NOT NULL,
 	apmat_p varchar NOT NULL,
@@ -22,7 +20,7 @@ create table Paciente
 
 CREATE TABLE Expediente
 (
-	num_exp integer not NULL GENERATED ALWAYS AS IDENTITY, 
+	num_exp integer not NULL, 
 	num_paciente integer not null,
 	alergias varchar,
 	constraint Expediente_pkey primary key(num_exp),
@@ -31,11 +29,12 @@ CREATE TABLE Expediente
 
 create table Cita
 (
-	id_cita integer not NULL GENERATED ALWAYS AS IDENTITY,
+	id_cita integer not NULL,
 	num_paciente integer not null,
 	consultorio varchar not null,
 	fecha date not null constraint fecha_invalida check (fecha > now()),
 	hora time not null,
+	estado varchar not null,
 	constraint Cita_pkey primary key(id_cita),
 	constraint Cita_fkey foreign key(num_paciente) references Paciente(num_paciente)
 );
@@ -53,7 +52,7 @@ create table Medico
 
 create table Especialidad
 (
-	cns integer not NULL GENERATED ALWAYS AS IDENTITY,
+	cns integer not NULL,
 	cedula varchar not null,
 	especialidad varchar not null,
 	constraint Especialidad_pkey primary key(cns, cedula),
@@ -63,7 +62,7 @@ create table Especialidad
 
 create table Consulta
 (
-	id_consulta integer not NULL GENERATED ALWAYS AS IDENTITY,
+	id_consulta integer not NULL,
 	id_cita integer not null,
 	cedula varchar not null,
 	fecha_con date not null constraint fecha_invalida check (fecha_con > now()),
@@ -78,7 +77,7 @@ create table Consulta
 
 create table Diagnostico
 (
-	num_diagnostico integer not NULL GENERATED ALWAYS AS IDENTITY,
+	num_diagnostico integer not NULL,
 	num_exp integer not null, 
 	cedula varchar not null,
 	medicinas varchar not null,
@@ -102,51 +101,148 @@ create table Detalle_Paciente_Medico
 	references Paciente(num_paciente) match simple on update no action on delete cascade
 );
 
+--crear secuencia  siga la numeracion para crear correctamente 1, 2 ,3
+
+--1
+create sequence paciente_num_paciente;
+create sequence Expediente_num_expediente;
+create sequence Cita_id_cita;
+create sequence Especialidad_cns;
+create sequence Consulta_id_consulta;
+create sequence Diagnostico_num_diagnostico;
+
+--2
+ALTER TABLE Diagnostico
+ALTER COLUMN num_diagnostico
+SET DEFAULT NEXTVAL('Diagnostico_num_diagnostico');
+
+ALTER TABLE Consulta
+ALTER COLUMN id_consulta
+SET DEFAULT NEXTVAL('Consulta_id_consulta');
+
+ALTER TABLE especialidad 
+ALTER COLUMN cns
+SET DEFAULT NEXTVAL('Especialidad_cns');
+
+ALTER TABLE Cita 
+ALTER COLUMN id_cita
+SET DEFAULT NEXTVAL('Cita_id_cita');
+
+ALTER TABLE Expediente 
+ALTER COLUMN num_exp
+SET DEFAULT NEXTVAL('Expediente_num_expediente');
+
+ALTER TABLE paciente 
+ALTER COLUMN num_paciente
+SET DEFAULT NEXTVAL('paciente_num_paciente');
+
+--3
+UPDATE Especialidad
+set cns = NEXTVAL ('Especialidad_cns');
+
+UPDATE Expediente
+set num_exp = NEXTVAL ('Expediente_num_expediente');
+
+UPDATE cita
+set id_cita = NEXTVAL ('Cita_id_cita');
+
+UPDATE paciente
+set num_paciente = NEXTVAL ('paciente_num_paciente');
+
+UPDATE consulta
+set id_consulta = NEXTVAL ('Consulta_id_consulta');
+
+UPDATE Diagnostico
+set num_diagnostico = NEXTVAL ('Diagnostico_num_diagnostico');
+
 --Crear grupos de usuarios
-create group recepcion;
-create group medicos;
-create group administrador;
+create role recepcion WITH NOLOGIN;
+create role medicos WITH NOLOGIN;
+create role administrador WITH NOLOGIN;
+
+GRANT USAGE ON SCHEMA public TO medicos;
+GRANT USAGE ON SCHEMA public TO recepcion;
+GRANT USAGE ON SCHEMA public TO administrador;
 
 --Creacion de usuarios para cada grupo
 --Grupo de recepcion
-create user noe_orozco with password 'recepcion' in group recepcion;
-create user jeannette_guillen with password 'recepcion' in group recepcion;
+create user noe_orozco with password 'recepcion';
+create user jeannette_guillen with password 'recepcion';
 --Grupo de medicos
-create user samuel_losada with password 'medico' in group medicos;
-create user eduardo_guzman with password 'medico' in group medicos;
+create user samuel_losada with password 'medico' ;
+create user eduardo_guzman with password 'medico' ;
+
 --Grupo de administrador
-create user emilia_hernandez with password 'admin' in group administrador;
+create user emilia_hernandez with password 'admin';
+
+GRANT medicos TO eduardo_guzman;
+GRANT medicos TO samuel_losada;
+GRANT recepcion TO noe_orozco;
+GRANT recepcion TO jeannette_guillen;
+GRANT administrador TO emilia_hernandez;
 
 --Otorgando privilegios de las tablas para el grupo de recepcion
 --Tablas en las que se otorgan todos los permisos
-GRANT all ON table Paciente to group recepcion;
-GRANT all ON table Cita to group recepcion;
-GRANT all ON table Consulta to group recepcion;
+GRANT all ON table Paciente to recepcion;
+GRANT all ON table Cita to recepcion;
+GRANT all ON table Consulta to recepcion;
 --Tablas a las que se le da permiso para seleccionar y eliminar
-GRANT select, delete ON table Expediente to group recepcion;
+GRANT select, delete ON table Expediente to recepcion;
 --Tablas con permisos solo para seleccionar
-GRANT select ON table Medico to group recepcion;
-GRANT select ON table Especialidad to group recepcion;
-GRANT select ON table Diagnostico to group recepcion;
+GRANT select ON table Medico to recepcion;
+GRANT select ON table Especialidad to recepcion;
+GRANT select ON table Diagnostico to recepcion;
 
 --Otorgando privilegios de las tablas para el grupo de medicos
 --Tablas en las que se otorgan todos los permisos
-GRANT all ON table Medico to group medicos;
-GRANT all ON table Especialidad to group medicos;
-GRANT all ON table Diagnostico to group medicos;
+GRANT all ON table Medico to medicos;
+GRANT all ON table Especialidad to medicos;
+GRANT all ON table Diagnostico to medicos;
 --Tablas a las que se le da permiso para seleccionar, eliminar y actualizar
-GRANT select, delete, update ON table Expediente to group medicos;
+GRANT select, insert, update ON table Expediente to medicos;
 --Tablas con permisos solo para seleccionar
-GRANT select ON table Paciente to group medicos;
-GRANT select ON table Cita to group medicos;
-GRANT select ON table Consulta to group medicos; 
+GRANT select ON table Paciente to medicos;
+GRANT select, update ON table Cita to medicos;
+GRANT all ON table Consulta to medicos; 
 
 --Otorgando permisos de las tablas para el grupo del administrador
-GRANT all ON table Paciente to group administrador;
-GRANT all ON table Expediente to group administrador;
-GRANT all ON table Cita to group administrador;
-GRANT all ON table Medico to group administrador;
-GRANT all ON table Especialidad to group administrador;
-GRANT all ON table Consulta to group administrador;
-GRANT all ON table Diagnostico to group administrador;
-GRANT all ON table Detalle_Paciente_Medico to group administrador; 
+GRANT all ON table Paciente to administrador;
+GRANT all ON table Expediente to administrador;
+GRANT all ON table Cita to administrador;
+GRANT all ON table Medico to administrador;
+GRANT all ON table Especialidad to administrador;
+GRANT all ON table Consulta to administrador;
+GRANT all ON table Diagnostico to administrador;
+GRANT all ON table Detalle_Paciente_Medico to administrador; 
+
+GRANT ALL on sequence expediente_num_expediente to medicos;
+GRANT ALL on sequence paciente_num_paciente to medicos;
+GRANT ALL on sequence Expediente_num_expediente to medicos;
+GRANT ALL on sequence Cita_id_cita to medicos;
+GRANT ALL on sequence Especialidad_cns to medicos;
+GRANT ALL on sequence Consulta_id_consulta to medicos;
+GRANT ALL on sequence Diagnostico_num_diagnostico to medicos;
+
+GRANT ALL on sequence expediente_num_expediente to recepcion;
+GRANT ALL on sequence paciente_num_paciente to recepcion;
+GRANT ALL on sequence Expediente_num_expediente to recepcion;
+GRANT ALL on sequence Cita_id_cita to recepcion;
+GRANT ALL on sequence Especialidad_cns to recepcion;
+GRANT ALL on sequence Consulta_id_consulta to recepcion;
+GRANT ALL on sequence Diagnostico_num_diagnostico to recepcion;
+
+GRANT ALL on sequence expediente_num_expediente to administrador;
+GRANT ALL on sequence paciente_num_paciente to administrador;
+GRANT ALL on sequence Expediente_num_expediente to administrador;
+GRANT ALL on sequence Cita_id_cita to administrador;
+GRANT ALL on sequence Especialidad_cns to administrador;
+GRANT ALL on sequence Consulta_id_consulta to administrador;
+GRANT ALL on sequence Diagnostico_num_diagnostico to administrador;
+
+GRANT ALL on procedure AgendarCita to administrador;
+GRANT ALL on procedure AgendarCita to medicos;
+GRANT ALL on procedure AgendarCita to recepcion;
+
+GRANT ALL on procedure GuardarDiagnostico to administrador;
+GRANT ALL on procedure GuardarDiagnostico to medicos;
+GRANT ALL on procedure GuardarDiagnostico to recepcion;
