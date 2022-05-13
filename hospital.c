@@ -64,11 +64,8 @@ void empty_stdin()
 // ░█─── ░█▄▄▀ ░█─░█ ░█─░█ 　 ░█▄▄█ ░█▄▄█ ░█─── ░█─ ░█▀▀▀ ░█░█░█ ─░█── ░█▀▀▀
 // ░█▄▄█ ░█─░█ ─▀▄▄▀ ░█▄▄▀ 　 ░█─── ░█─░█ ░█▄▄█ ▄█▄ ░█▄▄▄ ░█──▀█ ─░█── ░█▄▄▄
 
-<<<<<<< HEAD
-=======
 void Alta_Paciente()
 {
->>>>>>> master
     int num_paciente, edad_p, respAddP, opcRep, c, d, aFila, aColumna;
     char nombre_p[50], appat_p[50], apmat_p[50], direccion_p[60], addPaciente[700];
     setbuf(stdin, NULL);
@@ -84,31 +81,7 @@ void Alta_Paciente()
 
         aFila = PQntuples(resultado);
         aColumna = PQnfields(resultado);
-
-<<<<<<< HEAD
-                sprintf(addPaciente, "select num_paciente, nombre_p from Paciente");
-                resultado = PQexec(bd, addPaciente);
-                printf("Opcion SQL antes de ejecutarse: %s\n\n", addPaciente);
-
-
-                    if (resultado != NULL)
-                    {
-                    
-                        aFila = PQntuples(resultado);
-                        aColumna = PQnfields(resultado);
-
-                        for (c = 0; c < aFila; c++)
-                        {
-                            for ( d = 0; d < aColumna; d++)
-                            {
-                                printf("%s\t | \t ", PQgetvalue(resultado, c, d));
-                                }//fin del for bColumna
-                                printf("\n");
-                            }//fin del for bFila
-                            printf(" NUM_PACIENTE  |  NOMBRE \n\n");
-                    }//fin del if-null
-=======
-        for (c = 0; c < aFila; c++)
+    for (c = 0; c < aFila; c++)
         {
             for (d = 0; d < aColumna; d++)
             {
@@ -118,7 +91,6 @@ void Alta_Paciente()
         } // fin del for bFila
         printf(" NUM_PACIENTE  |  NOMBRE \n\n");
     } // fin del if-null
->>>>>>> master
 
     do
     {
@@ -443,218 +415,6 @@ void Seleccionar_Paciente()
                 sprintf(selecPaciente, "select * from Paciente where num_paciente = %i", bNum_Paciente);
                 resultado = PQexec(bd, selecPaciente);
                 printf("Opcion SQL antes de ejecutarse: %s\n\n", selecPaciente);
-<<<<<<< HEAD
-                if (PQntuples (resultado) == 1)
-                {
-                    printf("Pacientes encontrado! \n\n\n");
-                    printf("Mostrando resultado del punto 1: \n\n\n");
-                    if (resultado != NULL)
-                    {
-                    
-                        bFila = PQntuples(resultado);
-                        bColumna = PQnfields(resultado);
-
-                        for (a = 0; a < bFila; a++)
-                        {
-                            for ( b = 0; b < bColumna; b++)
-                            {
-                                printf("%s\t | \t ", PQgetvalue(resultado, a, b));
-                            }//fin del for bColumna
-                            printf("\n\n");
-                        }//fin del for bFila
-                    }//fin del if-null
-    
-                }else{
-
-                    printf("Paciente no encontrado! \n\n");
-                }
-                
-            break;
-
-            case 2: //opcion para ver un dato en especifico de un cliente en especifico
-
-                setbuf(stdin, NULL);
-                printf("Opcion dos:\n\n");
-                printf("Ingresar de favor el numero del paciente deseado del cual desea ver un dato en especifico: \n");
-                scanf("%i", &bNum_Paciente);
-                sprintf(selecPaciente, "select * from Paciente where num_paciente = %i", bNum_Paciente);
-                resultado = PQexec(bd, selecPaciente);
-
-                if (PQntuples (resultado) == 1)//valida si encuntra el paciente
-                {
-                    printf("Pacientes encontrado! \n\n\n\n");
-
-
-                    printf("Seleccionar una de las opciones ofertadas: \n");
-                    printf(" 1.- Nombre \n 2.- Apellidos \n 3.- Edad \n 4.- Direccion \n\n");
-                    scanf("%i", &opcVer);
-                    switch (opcVer)
-                    {
-                        case 1: //caso para el nombre
-                            setbuf(stdin, NULL);
-                            printf("Ingresar de favor el numero del paciente deseado del cual desea ver el dato: \n");
-                            scanf("%i", &bNum_Paciente);
-                            setbuf(stdin, NULL);
-                            sprintf(selecPaciente, "select nombre_p from Paciente where num_paciente = %i", bNum_Paciente);
-                            resultado = PQexec(bd, selecPaciente);
-                            printf("Opcion SQL antes de ejecutarse: %s\n\n", selecPaciente);
-
-                            if (resultado != NULL)
-                            {
-                    
-                                bFila = PQntuples(resultado);
-                                bColumna = PQnfields(resultado);
-
-                                for (a = 0; a < bFila; a++)
-                                {
-                                    for ( b = 0; b < bColumna; b++)
-                                    {
-                                        printf("El nombre del paciente es: %s\t | \t ", PQgetvalue(resultado, a, b));
-                                    }//fin del for bColumna
-                                    printf("\n\n");
-                                }//fin del for bFila
-                            }//fin del if-null
-                        break;
-                
-                        case 2: //caso para los apellidos
-                            setbuf(stdin, NULL);
-                            printf("Ingresar de favor el numero del paciente deseado del cual desea ver el dato: \n");
-                            scanf("%i", &bNum_Paciente);
-                            setbuf(stdin, NULL);
-                            sprintf(selecPaciente, "select appat_p, apmat_p from Paciente where num_paciente = %i", bNum_Paciente);
-                            resultado = PQexec(bd, selecPaciente);
-                            printf("Opcion SQL antes de ejecutarse: %s\n\n", selecPaciente);
-                            if (PQntuples (resultado) == 1)
-                            {
-                                printf("Pacientes encontrado! \n\n");
-
-                                if (resultado != NULL)
-                                {
-                    
-                                    bFila = PQntuples(resultado);
-                                    bColumna = PQnfields(resultado);
-                                    printf("Los apellidos del paciente son: \n");
-                                    for (a = 0; a < bFila; a++)
-                                    {
-                                        for ( b = 0; b < bColumna; b++)
-                                        {
-                                            printf("%s\t | \t ", PQgetvalue(resultado, a, b));
-                                        }//fin del for bColumna
-                                        printf("\n\n");
-                                    }//fin del for bFila
-                                }//fin del if-null
-
-                            }else{
-                                printf("Paciente no encontrado! \n\n");
-                            }
-                        break;//break case 2
-
-                        case 3://case 3 para la edad
-                            setbuf(stdin, NULL);
-                            printf("Ingresar de favor el numero del paciente deseado del cual desea ver el dato: \n");
-                            scanf("%i", &bNum_Paciente);
-                            setbuf(stdin, NULL);
-                            sprintf(selecPaciente, "select edad_p from Paciente where num_paciente = %i", bNum_Paciente);
-                            resultado = PQexec(bd, selecPaciente);
-                            printf("Opcion SQL antes de ejecutarse: %s\n\n", selecPaciente);
-                            if (PQntuples (resultado) == 1)
-                            {
-                                printf("Pacientes encontrado! \n\n");
-
-                                if (resultado != NULL)
-                                {
-                    
-                                    bFila = PQntuples(resultado);
-                                    bColumna = PQnfields(resultado);
-
-                                    for (a = 0; a < bFila; a++)
-                                    {
-                                        for ( b = 0; b < bColumna; b++)
-                                        {
-                                            printf("La edad del paciente es: %s\t | \t ", PQgetvalue(resultado, a, b));
-                                        }//fin del for bColumna
-                                        printf("\n\n");
-                                    }//fin del for bFila
-                                }//fin del if-null
-
-                            }else{
-                                printf("Paciente no encontrado! \n\n");
-                            }
-
-                        break;
-
-                        case 4://case 4 para la direccion
-                            setbuf(stdin, NULL);
-                            printf("Ingresar de favor el numero del paciente deseado del cual desea ver el dato: \n");
-                            scanf("%i", &bNum_Paciente);
-                            sprintf(selecPaciente, "select direccion from Paciente where num_paciente = %i", bNum_Paciente);
-                            resultado = PQexec(bd, selecPaciente);
-                            printf("Opcion SQL antes de ejecutarse: %s\n\n", selecPaciente);
-                            if (PQntuples (resultado) == 1)
-                            {
-                                printf("Pacientes encontrado! \n\n");
-
-                                if (resultado != NULL)
-                                {
-                    
-                                    bFila = PQntuples(resultado);
-                                    bColumna = PQnfields(resultado);
-
-                                    for (a = 0; a < bFila; a++)
-                                    {
-                                        for ( b = 0; b < bColumna; b++)
-                                        {
-                                            printf("La direccion del paciente es: %s\t | \t ", PQgetvalue(resultado, a, b));
-                                        }//fin del for bColumna
-                                        printf("\n\n");
-                                    }//fin del for bFila
-                                }//fin del if-null
-
-                            }else{
-                                printf("Paciente no encontrado! \n\n");
-                            }
-
-                        break;
-
-                    default:
-                        printf("\n\nElegir una de las opciones ofrecidas!\n\n");
-                    break;
-                }
-
-
-                }else{//else paciente no encontrado
-                    printf("Paciente no encontrado! \n\n");
-                }
-
-
-            break;
-
-            case 3:
-                //opcion de ver los datos de todos los pacientes
-
-                sprintf(selecPaciente, "select * from Paciente");
-                resultado = PQexec(bd, selecPaciente);
-                printf("Opcion SQL antes de ejecutarse: %s\n\n", selecPaciente);
-
-
-                    if (resultado != NULL)
-                    {
-                    
-                        bFila = PQntuples(resultado);
-                        bColumna = PQnfields(resultado);
-
-                        for (a = 0; a < bFila; a++)
-                        {
-                            for ( b = 0; b < bColumna; b++)
-                            {
-                                printf("%s\t | \t ", PQgetvalue(resultado, a, b));
-                                }//fin del for bColumna
-                                printf("\n\n");
-                            }//fin del for bFila
-                    }//fin del if-null
-
-            break;
-=======
                 if (PQntuples(resultado) == 1)
                 {
                     printf("Pacientes encontrado! \n\n\n");
@@ -866,7 +626,7 @@ void Seleccionar_Paciente()
                 }     // fin del if-null
 
                 break;
->>>>>>> master
+                
 
             case 4:
                 printf("\n\n");
