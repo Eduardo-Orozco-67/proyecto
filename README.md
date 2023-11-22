@@ -30,10 +30,6 @@ Deberá proporcionar los siguientes reportes:
 - [@Eduardo-Orozco-67](https://github.com/Eduardo-Orozco-67)
 - [@EmiliaZul](https://github.com/EmiliaZul)
 - [@SamuelSanchez17](https://github.com/SamuelSanchez17)
-- [@Jeannette-Sachez11](https://github.com/Jeannette-Sachez11)
-- [@Noe7733](https://github.com/Noe7733)
-
-
 
 ## Instalacion
 
